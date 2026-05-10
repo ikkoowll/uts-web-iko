@@ -156,3 +156,19 @@ tr:nth-child(even) {
 }
 
 .btn-hapus:hover { background: #c82333; }
+/* Update style untuk link pendaftaran di login card */
+.login-card .register-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.login-card .register-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-card .register-link a:hover {
+    text-decoration: underline;
+}
