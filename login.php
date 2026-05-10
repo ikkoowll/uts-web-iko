@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'koneksi.php';
+require 'config.php';
 
 // Logika Login
 if (isset($_POST['login'])) {
