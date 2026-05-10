@@ -14,7 +14,7 @@ Karena kamu menambahkan link ke `register.php`, kamu perlu membuat filenya agar 
 
 ```php
 <?php
-require 'koneksi.php';
+require 'config.php';
 
 if (isset($_POST['register'])) {
     $nama = $_POST['nama_lengkap'];
