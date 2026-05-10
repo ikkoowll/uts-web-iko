@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "db_ukm";
+$db   = "pengelolaan_data_internal_ukm";
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
