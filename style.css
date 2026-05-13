@@ -1,174 +1,62 @@
-{
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
-}
-
-.login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f4;
-}
-
-.login-card {
+/* =========================================
+   Styles untuk Form CRUD (Tambah & Edit)
+   ========================================= */
+.form-card {
     background: #fff;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    width: 320px;
+    max-width: 500px; /* Lebih lebar sedikit dari form login */
+    margin: 30px auto; /* Membuat form berada di tengah */
 }
 
-.login-card h2 {
-    text-align: center;
+.form-card h2 {
+    color: #007bff;
     margin-top: 0;
     margin-bottom: 20px;
-    color: #007bff;
+    text-align: center;
+    border-bottom: 2px solid #f4f4f4;
+    padding-bottom: 10px;
 }
 
-.login-card input {
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 14px;
+}
+
+.form-group input, .form-group select {
     width: 100%;
-    padding: 12px;
-    margin: 10px 0;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-family: inherit;
 }
 
-.login-card button {
+.form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.form-card button[type="submit"] {
     width: 100%;
     padding: 12px;
-    background: #007bff;
+    background: #28a745;
     color: white;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
     font-weight: bold;
+    cursor: pointer;
     margin-top: 10px;
     transition: 0.3s;
 }
 
-.login-card button:hover {
-    background: #0056b3;
-}
-
-.error-msg {
-    color: #dc3545;
-    text-align: center;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.navbar {
-    background: #007bff;
-    padding: 15px 20px;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.navbar .nav-brand {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.navbar a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    background: rgba(255,255,255,0.2);
-    padding: 8px 15px;
-    border-radius: 4px;
-    transition: 0.3s;
-}
-
-.navbar a:hover {
-    background: rgba(255,255,255,0.3);
-}
-
-.container {
-    padding: 20px;
-    max-width: 1000px;
-    margin: 20px auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    background: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-}
-
-th {
-    background-color: #007bff;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.btn {
-    padding: 8px 12px;
-    text-decoration: none;
-    color: white;
-    border-radius: 4px;
-    display: inline-block;
-    font-size: 14px;
-    transition: 0.3s;
-}
-
-.btn-tambah {
-    background: #28a745;
-    margin-bottom: 15px;
-}
-
-.btn-tambah:hover { background: #218838; }
-
-.btn-edit {
-    background: #ffc107;
-    color: #333;
-    font-weight: bold;
-}
-
-.btn-edit:hover { background: #e0a800; }
-
-.btn-hapus {
-    background: #dc3545;
-}
-
-.btn-hapus:hover { background: #c82333; }
-/* Update style untuk link pendaftaran di login card */
-.login-card .register-link {
-    text-align: center;
-    margin-top: 15px;
-    font-size: 14px;
-}
-
-.login-card .register-link a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.login-card .register-link a:hover {
-    text-decoration: underline;
+.form-card button[type="submit"]:hover {
+    background: #218838;
 }
