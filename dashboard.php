@@ -21,7 +21,7 @@ if (!isset($_SESSION['username'])) {
 
     <div class="navbar">
         <div class="nav-brand">SIM UKM - Welcome, <?php echo $_SESSION['username']; ?>!</div>
-        <div><a href="logout.php" style="background: #dc3545;">Logout</a></div>
+        <div><a href="logout.php" style="background: #cea9e0;">Logout</a></div>
     </div>
 
     <div class="container">

@@ -97,7 +97,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgb(0, 0, 0);
 }
 
 .navbar .nav-brand {
@@ -109,14 +109,14 @@ body {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    background: rgba(122, 61, 61, 0.2);
+    background: rgb(127, 33, 199);
     padding: 8px 15px;
     border-radius: 4px;
     transition: 0.3s;
 }
 
 .navbar a:hover {
-    background: rgba(255,255,255,0.3);
+    background: rgb(108, 30, 110);
 }
 
 .container {
@@ -132,7 +132,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
-    background: white;
+    background: rgb(255, 255, 255);
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
@@ -168,22 +168,22 @@ tr:nth-child(even) {
 }
 
 .btn-tambah {
-    background: #28a745;
+    background: #dc29c1;
     margin-bottom: 15px;
 }
 
-.btn-tambah:hover { background: #212888; }
+.btn-tambah:hover { background: #784bbe; }
 
 .btn-edit {
-    background: #ff6207;
-    color: #333;
+    background: #8c5186;
+    color: #ffffff;
     font-weight: bold;
 }
 
-.btn-edit:hover { background: #e0a800; }
+.btn-edit:hover { background: #e000d8; }
 
 .btn-hapus {
-    background: #dc3545;
+    background: #dc3580;
 }
 
 .btn-hapus:hover { background: #c82333; }
@@ -192,7 +192,7 @@ tr:nth-child(even) {
    Styles untuk Form CRUD (Tambah & Edit)
    ========================================= */
 .form-card {
-    background: #fff;
+    background: #df65e3;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -231,13 +231,13 @@ tr:nth-child(even) {
 
 .form-group input:focus, .form-group select:focus {
     outline: none;
-    border-color: #007bff;
+    border-color: #9a1b87;
 }
 
 .form-card button[type="submit"] {
     width: 100%;
     padding: 12px;
-    background: #28a745;
+    background: #881784;
     color: white;
     border: none;
     border-radius: 4px;
@@ -248,5 +248,5 @@ tr:nth-child(even) {
 }
 
 .form-card button[type="submit"]:hover {
-    background: #166bac;
+    background: #365f7e;
 }

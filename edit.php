@@ -94,7 +94,7 @@ if (isset($_POST['update'])) {
                     <input type="number" name="tahun_angkatan" id="tahun_angkatan" value="<?php echo $data['tahun_angkatan']; ?>" required>
                 </div>
 
-                <button type="submit" name="update" style="background: #ffc107; color: #333;">Update Data</button>
+                <button type="submit" name="update" style="background: #9a2e8a; color: #333;">Update Data</button>
             </form>
         </div>
     </div>
