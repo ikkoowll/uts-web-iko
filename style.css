@@ -13,6 +13,10 @@ body {
     color: #a893b4;
 }
 
+body {
+    background-color: #f4f6f9; /* Ganti dengan kode warna yang Anda inginkan */
+}
+
 /* =========================================
    Styles untuk Halaman Login & Register
    ========================================= */
