@@ -254,3 +254,9 @@ tr:nth-child(even) {
 .form-card button[type="submit"]:hover {
     background: #365f7e;
 }
+
+.content-wrapper {
+    background-color: #f5f5f5; /* Ganti warna di sini */
+    min-height: 100vh; /* Agar warna memenuhi layar ke bawah */
+    padding: 20px;     /* Memberi jarak agar konten tidak menempel ke pinggir */
+}
