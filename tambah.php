@@ -45,7 +45,7 @@ if (isset($_POST['simpan'])) {
 
     <div class="navbar">
         <div class="nav-brand">SIM UKM - Tambah Data</div>
-        <div><a href="dashboard.php" style="background-color: #dc3545;">Kembali</a></div>
+        <div><a href="dashboard.php" style="background-color: #ac5dc6;">Kembali</a></div>
     </div>
 
     <div class="container">
