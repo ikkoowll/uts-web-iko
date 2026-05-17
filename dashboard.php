@@ -29,6 +29,10 @@ if (!isset($_SESSION['username'])) {
         
         <a href="tambah.php" class="btn btn-tambah">+ Tambah Data Anggota</a>
 
+    <div class="content-wrapper">
+        <h2>Data Anggota Internal UKM</h2>
+    </div>
+
         <table>
             <thead>
                 <tr>
