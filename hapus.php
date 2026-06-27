@@ -12,6 +12,9 @@ if (!isset($_SESSION['username'])) {
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     
+    // Hapus riwayat kas anggota terlebih dahulu untuk menjaga integritas data
+    mysqli_query($conn, "DELETE FROM pembayaran_kas WHERE id_anggota = '$id'");
+    
     // Query untuk menghapus data berdasarkan ID
     $query = "DELETE FROM anggota_ukm WHERE id_user = '$id'";
     

@@ -28,7 +28,22 @@ $total_media = $media_data['total'];
 $event_query = mysqli_query($conn, "SELECT COUNT(*) as total FROM anggota_ukm WHERE divisi = 'Event/Acara'");
 $event_data = mysqli_fetch_assoc($event_query);
 $total_event = $event_data['total'];
+
+// Ambil statistik kas
+$kas_query = mysqli_query($conn, "SELECT SUM(nominal) as total FROM pembayaran_kas WHERE status_bayar = 'Sudah Bayar'");
+$kas_data = mysqli_fetch_assoc($kas_query);
+$total_kas = $kas_data['total'] ?? 0;
+
+$tahun_aktif = intval(date('Y'));
+
+// Ambil data pembayaran kas untuk seluruh anggota pada tahun aktif
+$payments = [];
+$query_pay = mysqli_query($conn, "SELECT * FROM pembayaran_kas WHERE tahun = '$tahun_aktif'");
+while ($pay = mysqli_fetch_assoc($query_pay)) {
+    $payments[$pay['id_anggota']][$pay['id_bulan']] = $pay;
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="id">
@@ -50,6 +65,10 @@ $total_event = $event_data['total'];
         
         <!-- Statistik Grid -->
         <div class="stats-grid">
+            <div class="stat-card kas">
+                <span class="stat-title">Kas Terkumpul</span>
+                <span class="stat-value">Rp <?php echo number_format($total_kas, 0, ',', '.'); ?></span>
+            </div>
             <div class="stat-card total">
                 <span class="stat-title">Total Anggota</span>
                 <span class="stat-value"><?php echo $total_anggota; ?></span>
@@ -83,6 +102,7 @@ $total_event = $event_data['total'];
                         <th>Nama Lengkap</th>
                         <th>Divisi</th>
                         <th>Angkatan</th>
+                        <th>Status Kas (<?php echo $tahun_aktif; ?>)</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -118,6 +138,25 @@ $total_event = $event_data['total'];
                                 </td>
                                 <td><?php echo $row['tahun_angkatan']; ?></td>
                                 <td>
+                                    <div class="kas-container">
+                                        <?php
+                                        $months = [
+                                            1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr',
+                                            5 => 'Mei', 6 => 'Jun', 7 => 'Jul', 8 => 'Agt',
+                                            9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'
+                                        ];
+                                        foreach ($months as $m_num => $m_name) {
+                                            $is_paid = isset($payments[$row['id_user']][$m_num]) && $payments[$row['id_user']][$m_num]['status_bayar'] == 'Sudah Bayar';
+                                            if ($is_paid) {
+                                                echo '<a href="toggle_kas.php?id_anggota=' . $row['id_user'] . '&bulan=' . $m_num . '&tahun=' . $tahun_aktif . '" class="kas-badge lunas" title="Status: Lunas (Klik untuk batalkan)">' . $m_name . ' Done</a>';
+                                            } else {
+                                                echo '<a href="toggle_kas.php?id_anggota=' . $row['id_user'] . '&bulan=' . $m_num . '&tahun=' . $tahun_aktif . '" class="kas-badge belum" title="Status: Belum Bayar (Klik untuk konfirmasi)">' . $m_name . '</a>';
+                                            }
+                                        }
+                                        ?>
+                                    </div>
+                                </td>
+                                <td>
                                     <a href="edit.php?id=<?php echo $row['id_user']; ?>" class="btn btn-edit">Edit</a>
                                     <a href="hapus.php?id=<?php echo $row['id_user']; ?>" class="btn btn-hapus" onclick="return confirm('Yakin ingin menghapus data ini?');">Hapus</a>
                                 </td>
@@ -126,7 +165,7 @@ $total_event = $event_data['total'];
                         } // Penutup while
                     } else {
                         // Jika data masih kosong
-                        echo "<tr><td colspan='6' style='text-align: center;'>Belum ada data anggota.</td></tr>";
+                        echo "<tr><td colspan='7' style='text-align: center;'>Belum ada data anggota.</td></tr>";
                     }
                     ?>
                 </tbody>

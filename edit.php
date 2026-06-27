@@ -31,7 +31,6 @@ if (isset($_POST['update'])) {
     $nama = $_POST['nama'];
     $divisi = $_POST['divisi'];
     $angkatan = $_POST['tahun_angkatan'];
-
     // Query UPDATE untuk mengubah data lama menjadi data baru
     $update_query = "UPDATE anggota_ukm SET nim='$nim', nama='$nama', divisi='$divisi', tahun_angkatan='$angkatan' WHERE id_user='$id'";
 
@@ -93,6 +92,8 @@ if (isset($_POST['update'])) {
                     <label for="tahun_angkatan">Tahun Angkatan</label>
                     <input type="number" name="tahun_angkatan" id="tahun_angkatan" value="<?php echo $data['tahun_angkatan']; ?>" required>
                 </div>
+
+
 
                 <button type="submit" name="update">Update Data</button>
             </form>

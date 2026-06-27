@@ -15,7 +15,6 @@ if (isset($_POST['simpan'])) {
     $nama = $_POST['nama'];
     $divisi = $_POST['divisi'];
     $angkatan = $_POST['tahun_angkatan'];
-
     // Query untuk memasukkan data ke tabel anggota_ukm
     $query = "INSERT INTO anggota_ukm (nim, nama, divisi, tahun_angkatan) VALUES ('$nim', '$nama', '$divisi', '$angkatan')";
 
@@ -81,6 +80,8 @@ if (isset($_POST['simpan'])) {
                     <label for="tahun_angkatan">Tahun Angkatan</label>
                     <input type="number" name="tahun_angkatan" id="tahun_angkatan" placeholder="Contoh: 2023" required>
                 </div>
+
+
 
                 <button type="submit" name="simpan">Simpan Data</button>
             </form>

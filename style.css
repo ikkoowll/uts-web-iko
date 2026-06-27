@@ -350,6 +350,18 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
+.stat-card.sudah-bayar .stat-value {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-card.belum-bayar .stat-value {
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 /* ==========================================================================
    Table & Data styling
    ========================================================================== */
@@ -429,6 +441,18 @@ tbody tr:hover {
     background: rgba(245, 158, 11, 0.15);
     color: #fbbf24;
     border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.badge-sudah {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.badge-belum {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.25);
 }
 
 /* ==========================================================================
@@ -685,6 +709,64 @@ tbody tr:hover {
     }
 
     td:nth-of-type(6):before {
+        content: "Status Kas";
+    }
+
+    td:nth-of-type(7):before {
         content: "Aksi";
     }
+}
+
+/* ==========================================================================
+   Monthly Kas Payments (Interactive Badges)
+   ========================================================================== */
+.stat-card.kas .stat-value {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.kas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    max-width: 320px;
+}
+
+.kas-badge {
+    display: inline-block;
+    padding: 3px 6px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.kas-badge.lunas {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.kas-badge.lunas:hover {
+    background: rgba(16, 185, 129, 0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.3);
+}
+
+.kas-badge.belum {
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.kas-badge.belum:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 0 8px rgba(248, 113, 113, 0.2);
 }
