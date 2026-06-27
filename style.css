@@ -1,252 +1,638 @@
-/* =========================================
-   Global Styles
-   ========================================= */
+/* ==========================================================================
+   Import Google Fonts
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   CSS Custom Properties (Color Palette & Variables)
+   ========================================================================== */
+:root {
+    --bg-gradient: linear-gradient(135deg, #0a0813 0%, #130d2b 50%, #080610 100%);
+    --card-bg: rgba(22, 18, 41, 0.7);
+    --card-border: rgba(255, 255, 255, 0.07);
+    --text-primary: #f3f4f6;
+    --text-secondary: #9ca3af;
+    
+    --primary-gradient: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);
+    --primary-color: #a855f7;
+    --primary-hover: #c084fc;
+    
+    --danger-gradient: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%);
+    --danger-hover: #fda4af;
+    
+    --success-color: #10b981;
+    --info-color: #3b82f6;
+    --warning-color: #f59e0b;
+}
+
+/* ==========================================================================
+   Global Reset & Styles
+   ========================================================================== */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    color: #a893b4;
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    line-height: 1.5;
 }
 
-/* =========================================
-   Styles untuk Halaman Login & Register
-   ========================================= */
+/* ==========================================================================
+   Scrollbar Customization
+   ========================================================================== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0d0b1a;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.5);
+}
+
+/* ==========================================================================
+   Halaman Login & Register
+   ========================================================================== */
 .login-page {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #79598f;
+    padding: 20px;
+    background: var(--bg-gradient);
 }
 
 .login-card {
-    background: #611a73;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgb(216, 226, 249);
-    width: 320px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 
+                0 0 40px rgba(139, 92, 246, 0.1);
+    width: 100%;
+    max-width: 400px;
+    transition: transform 0.3s ease;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.login-card:hover {
+    transform: translateY(-2px);
 }
 
 .login-card h2 {
     text-align: center;
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #d1bbda;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .login-card input {
     width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #cc7676;
-    border-radius: 4px;
+    padding: 14px 16px;
+    margin: 12px 0;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.login-card input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.login-card input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
 }
 
 .login-card button {
     width: 100%;
-    padding: 12px;
-    background: #931aa5;
-    color: #ae9ab1;
+    padding: 14px;
+    margin-top: 16px;
+    background: var(--primary-gradient);
+    color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
     cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+    transition: all 0.3s ease;
 }
 
 .login-card button:hover {
-    background: #520f5c;
+    opacity: 0.95;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+}
+
+.login-card button:active {
+    transform: translateY(0);
 }
 
 .error-msg {
-    color: #dc3545;
-    text-align: center;
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.1);
+    border: 1px solid rgba(248, 113, 113, 0.2);
+    padding: 12px;
+    border-radius: 10px;
     font-size: 14px;
-    margin-bottom: 10px;
+    text-align: center;
+    margin-bottom: 16px;
 }
 
 .login-card .register-link {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 24px;
     font-size: 14px;
+    color: var(--text-secondary);
 }
 
 .login-card .register-link a {
-    color: #ad9db7;
+    color: var(--primary-color);
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
+    transition: color 0.3s ease;
 }
 
 .login-card .register-link a:hover {
+    color: var(--primary-hover);
     text-decoration: underline;
 }
 
-/* =========================================
-   Styles untuk Dashboard Utama
-   ========================================= */
+/* ==========================================================================
+   Navigation Bar (Navbar)
+   ========================================================================== */
 .navbar {
-    background: #7858c7;
-    padding: 15px 20px;
-    color: rgb(255, 255, 255);
+    background: rgba(18, 12, 38, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 16px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgb(0, 0, 0);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .navbar .nav-brand {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 20px;
+    font-weight: 700;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .navbar a {
-    color: white;
+    color: #fff;
     text-decoration: none;
-    font-weight: bold;
-    background: rgb(127, 33, 199);
-    padding: 8px 15px;
-    border-radius: 4px;
-    transition: 0.3s;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
 }
 
 .navbar a:hover {
-    background: rgb(108, 30, 110);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Specific logout styling */
+.navbar div a[href="logout.php"] {
+    background: var(--danger-gradient) !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.navbar div a[href="logout.php"]:hover {
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+    opacity: 0.95;
+}
+
+/* ==========================================================================
+   Dashboard & Pages Layout
+   ========================================================================== */
 .container {
-    padding: 20px;
-    max-width: 1000px;
-    margin: 20px auto;
+    padding: 30px 40px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    flex-grow: 1;
+    animation: fadeIn 0.4s ease-out;
 }
 
-/* =========================================
-   Styles untuk Tabel Data
-   ========================================= */
+.container h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.container h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--primary-gradient);
+    border-radius: 2px;
+}
+
+/* ==========================================================================
+   Statistik Grid
+   ========================================================================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(8px);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(139, 92, 246, 0.25);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.1);
+}
+
+.stat-card .stat-title {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.stat-card .stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    background: #fff;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Color variations for specific stats */
+.stat-card.total .stat-value { background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.stat-card.humas .stat-value { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.stat-card.psdm .stat-value { background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.stat-card.media .stat-value { background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.stat-card.event .stat-value { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* ==========================================================================
+   Table & Data styling
+   ========================================================================== */
+.table-wrapper {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
-    background: rgb(255, 255, 255);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-table, th, td {
-    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 15px;
 }
 
 th, td {
-    padding: 12px 15px;
-    text-align: left;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 th {
-    background-color: #7d1d9b;
-    color: white;
+    background: rgba(139, 92, 246, 0.08);
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.15);
 }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
+tr:last-child td {
+    border-bottom: none;
 }
 
-/* =========================================
-   Styles untuk Tombol Aksi (Buttons)
-   ========================================= */
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Division Badges */
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.badge-humas {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.badge-psdm {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.badge-media {
+    background: rgba(168, 85, 247, 0.15);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+.badge-event {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
 .btn {
-    padding: 8px 12px;
+    padding: 8px 16px;
     text-decoration: none;
     color: white;
-    border-radius: 4px;
-    display: inline-block;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-size: 14px;
-    transition: 0.3s;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
 }
 
 .btn-tambah {
-    background: #dc29c1;
-    margin-bottom: 15px;
+    background: var(--primary-gradient);
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.25);
 }
 
-.btn-tambah:hover { background: #784bbe; }
+.btn-tambah:hover {
+    opacity: 0.95;
+    box-shadow: 0 6px 16px rgba(168, 85, 247, 0.35);
+    transform: translateY(-1px);
+}
 
 .btn-edit {
-    background: #8c5186;
-    color: #ffffff;
-    font-weight: bold;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    margin-right: 8px;
 }
 
-.btn-edit:hover { background: #e000d8; }
+.btn-edit:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+}
 
 .btn-hapus {
-    background: #dc3580;
+    background: var(--danger-gradient);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.15);
 }
 
-.btn-hapus:hover { background: #c82333; }
+.btn-hapus:hover {
+    opacity: 0.95;
+    box-shadow: 0 6px 14px rgba(239, 68, 68, 0.25);
+}
 
-/* =========================================
-   Styles untuk Form CRUD (Tambah & Edit)
-   ========================================= */
+/* ==========================================================================
+   Forms Layout (Tambah & Edit)
+   ========================================================================== */
 .form-card {
-    background: #df65e3;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 500px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
     margin: 30px auto;
 }
 
 .form-card h2 {
-    color: #153f6c;
-    margin-top: 0;
-    margin-bottom: 20px;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 28px;
     text-align: center;
-    border-bottom: 2px solid #f4f4f4;
-    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 16px;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 22px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-secondary);
     font-size: 14px;
 }
 
-.form-group input, .form-group select {
+.form-group input, 
+.form-group select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
     font-family: inherit;
+    transition: all 0.3s ease;
 }
 
-.form-group input:focus, .form-group select:focus {
+/* Select specific options styling */
+.form-group select option {
+    background-color: #120c26;
+    color: #fff;
+}
+
+.form-group input:focus, 
+.form-group select:focus {
     outline: none;
-    border-color: #9a1b87;
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
 }
 
 .form-card button[type="submit"] {
     width: 100%;
-    padding: 12px;
-    background: #881784;
+    padding: 14px;
+    background: var(--primary-gradient);
     color: white;
     border: none;
-    border-radius: 4px;
-    font-weight: bold;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
     cursor: pointer;
-    margin-top: 10px;
-    transition: 0.3s;
+    margin-top: 16px;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+    transition: all 0.3s ease;
 }
 
 .form-card button[type="submit"]:hover {
-    background: #365f7e;
+    opacity: 0.95;
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    th, td {
+        padding: 12px 16px;
+    }
+    
+    .form-card {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    tr {
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        background: rgba(255, 255, 255, 0.01);
+        padding: 8px;
+    }
+    
+    td {
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+    }
+    
+    td:last-child {
+        border-bottom: none;
+    }
+    
+    td:before {
+        position: absolute;
+        left: 16px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 13px;
+    }
+    
+    td:nth-of-type(1):before { content: "No"; }
+    td:nth-of-type(2):before { content: "NIM"; }
+    td:nth-of-type(3):before { content: "Nama"; }
+    td:nth-of-type(4):before { content: "Divisi"; }
+    td:nth-of-type(5):before { content: "Angkatan"; }
+    td:nth-of-type(6):before { content: "Aksi"; }
 }

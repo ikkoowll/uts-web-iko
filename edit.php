@@ -16,7 +16,7 @@ if (!isset($_GET['id'])) {
 $id = $_GET['id'];
 
 // 2. Ambil data lama dari database untuk diisikan ke dalam form
-$query = mysqli_query($conn, "SELECT * FROM anggota_ukm WHERE id = '$id'");
+$query = mysqli_query($conn, "SELECT * FROM anggota_ukm WHERE id_user = '$id'");
 $data = mysqli_fetch_assoc($query);
 
 // Jika data tidak ditemukan di database
@@ -33,7 +33,7 @@ if (isset($_POST['update'])) {
     $angkatan = $_POST['tahun_angkatan'];
 
     // Query UPDATE untuk mengubah data lama menjadi data baru
-    $update_query = "UPDATE anggota_ukm SET nim='$nim', nama='$nama', divisi='$divisi', tahun_angkatan='$angkatan' WHERE id='$id'";
+    $update_query = "UPDATE anggota_ukm SET nim='$nim', nama='$nama', divisi='$divisi', tahun_angkatan='$angkatan' WHERE id_user='$id'";
 
     if (mysqli_query($conn, $update_query)) {
         echo "<script>
@@ -58,7 +58,7 @@ if (isset($_POST['update'])) {
 
     <div class="navbar">
         <div class="nav-brand">SIM UKM - Edit Data</div>
-        <div><a href="dashboard.php" style="background-color: #6c757d;">Batal / Kembali</a></div>
+        <div><a href="dashboard.php">Batal / Kembali</a></div>
     </div>
 
     <div class="container">
@@ -94,7 +94,7 @@ if (isset($_POST['update'])) {
                     <input type="number" name="tahun_angkatan" id="tahun_angkatan" value="<?php echo $data['tahun_angkatan']; ?>" required>
                 </div>
 
-                <button type="submit" name="update" style="background: #9a2e8a; color: #333;">Update Data</button>
+                <button type="submit" name="update">Update Data</button>
             </form>
         </div>
     </div>

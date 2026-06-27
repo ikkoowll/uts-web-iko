@@ -13,7 +13,7 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
     
     // Query untuk menghapus data berdasarkan ID
-    $query = "DELETE FROM anggota_ukm WHERE id = '$id'";
+    $query = "DELETE FROM anggota_ukm WHERE id_user = '$id'";
     
     if (mysqli_query($conn, $query)) {
         echo "<script>
