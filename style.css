@@ -12,14 +12,14 @@
     --card-border: rgba(255, 255, 255, 0.07);
     --text-primary: #f3f4f6;
     --text-secondary: #9ca3af;
-    
+
     --primary-gradient: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);
     --primary-color: #a855f7;
     --primary-hover: #c084fc;
-    
+
     --danger-gradient: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%);
     --danger-hover: #fda4af;
-    
+
     --success-color: #10b981;
     --info-color: #3b82f6;
     --warning-color: #f59e0b;
@@ -51,13 +51,16 @@ body {
 ::-webkit-scrollbar {
     width: 8px;
 }
+
 ::-webkit-scrollbar-track {
     background: #0d0b1a;
 }
+
 ::-webkit-scrollbar-thumb {
     background: rgba(139, 92, 246, 0.3);
     border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(139, 92, 246, 0.5);
 }
@@ -81,8 +84,8 @@ body {
     -webkit-backdrop-filter: blur(16px);
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 
-                0 0 40px rgba(139, 92, 246, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(139, 92, 246, 0.1);
     width: 100%;
     max-width: 400px;
     transition: transform 0.3s ease;
@@ -317,11 +320,35 @@ body {
 }
 
 /* Color variations for specific stats */
-.stat-card.total .stat-value { background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.stat-card.humas .stat-value { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.stat-card.psdm .stat-value { background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.stat-card.media .stat-value { background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.stat-card.event .stat-value { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.stat-card.total .stat-value {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-card.humas .stat-value {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-card.psdm .stat-value {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-card.media .stat-value {
+    background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-card.event .stat-value {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
 /* ==========================================================================
    Table & Data styling
@@ -342,7 +369,8 @@ table {
     font-size: 15px;
 }
 
-th, td {
+th,
+td {
     padding: 16px 24px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -492,7 +520,7 @@ tbody tr:hover {
     font-size: 14px;
 }
 
-.form-group input, 
+.form-group input,
 .form-group select {
     width: 100%;
     padding: 12px 16px;
@@ -511,7 +539,7 @@ tbody tr:hover {
     color: #fff;
 }
 
-.form-group input:focus, 
+.form-group input:focus,
 .form-group select:focus {
     outline: none;
     border-color: var(--primary-color);
@@ -548,6 +576,7 @@ tbody tr:hover {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -564,19 +593,20 @@ tbody tr:hover {
         gap: 16px;
         text-align: center;
     }
-    
+
     .container {
         padding: 20px;
     }
-    
+
     .stats-grid {
         grid-template-columns: 1fr 1fr;
     }
-    
-    th, td {
+
+    th,
+    td {
         padding: 12px 16px;
     }
-    
+
     .form-card {
         padding: 25px;
     }
@@ -586,17 +616,22 @@ tbody tr:hover {
     .stats-grid {
         grid-template-columns: 1fr;
     }
-    
-    table, thead, tbody, th, td, tr {
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
         display: block;
     }
-    
+
     thead tr {
         position: absolute;
         top: -9999px;
         left: -9999px;
     }
-    
+
     tr {
         border: 1px solid var(--card-border);
         border-radius: 12px;
@@ -604,7 +639,7 @@ tbody tr:hover {
         background: rgba(255, 255, 255, 0.01);
         padding: 8px;
     }
-    
+
     td {
         border: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.03);
@@ -612,11 +647,11 @@ tbody tr:hover {
         padding-left: 50%;
         text-align: right;
     }
-    
+
     td:last-child {
         border-bottom: none;
     }
-    
+
     td:before {
         position: absolute;
         left: 16px;
@@ -628,11 +663,28 @@ tbody tr:hover {
         color: var(--text-secondary);
         font-size: 13px;
     }
-    
-    td:nth-of-type(1):before { content: "No"; }
-    td:nth-of-type(2):before { content: "NIM"; }
-    td:nth-of-type(3):before { content: "Nama"; }
-    td:nth-of-type(4):before { content: "Divisi"; }
-    td:nth-of-type(5):before { content: "Angkatan"; }
-    td:nth-of-type(6):before { content: "Aksi"; }
+
+    td:nth-of-type(1):before {
+        content: "No";
+    }
+
+    td:nth-of-type(2):before {
+        content: "NIM";
+    }
+
+    td:nth-of-type(3):before {
+        content: "Nama";
+    }
+
+    td:nth-of-type(4):before {
+        content: "Divisi";
+    }
+
+    td:nth-of-type(5):before {
+        content: "Angkatan";
+    }
+
+    td:nth-of-type(6):before {
+        content: "Aksi";
+    }
 }
