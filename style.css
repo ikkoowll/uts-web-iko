@@ -770,3 +770,9 @@ tbody tr:hover {
     transform: translateY(-1px);
     box-shadow: 0 0 8px rgba(248, 113, 113, 0.2);
 }
+
+.navbar a.active-nav {
+    background: var(--primary-gradient);
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.25);
+}

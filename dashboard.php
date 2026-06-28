@@ -29,10 +29,19 @@ $event_query = mysqli_query($conn, "SELECT COUNT(*) as total FROM anggota_ukm WH
 $event_data = mysqli_fetch_assoc($event_query);
 $total_event = $event_data['total'];
 
-// Ambil statistik kas
+// Ambil statistik kas (Pemasukan)
 $kas_query = mysqli_query($conn, "SELECT SUM(nominal) as total FROM pembayaran_kas WHERE status_bayar = 'Sudah Bayar'");
 $kas_data = mysqli_fetch_assoc($kas_query);
-$total_kas = $kas_data['total'] ?? 0;
+$total_pemasukan = $kas_data['total'] ?? 0;
+
+// Ambil statistik pengeluaran
+$pengeluaran_query = mysqli_query($conn, "SELECT SUM(jumlah_pengeluaran) as total FROM pengeluaran_kas");
+$pengeluaran_data = mysqli_fetch_assoc($pengeluaran_query);
+$total_pengeluaran = $pengeluaran_data['total'] ?? 0;
+
+// Total Kas Sekarang (Net Balance)
+$total_kas = $total_pemasukan - $total_pengeluaran;
+
 
 $tahun_aktif = intval(date('Y'));
 
@@ -57,7 +66,11 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
 
     <div class="navbar">
         <div class="nav-brand">SIM UKM - Welcome, <?php echo $_SESSION['username']; ?>!</div>
-        <div><a href="logout.php">Logout</a></div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <a href="dashboard.php" class="active-nav">Dashboard</a>
+            <a href="pengeluaran.php">Pengeluaran Kas</a>
+            <a href="logout.php">Logout</a>
+        </div>
     </div>
 
     <div class="container">
