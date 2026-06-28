@@ -104,7 +104,20 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
             </div>
         </div>
         
-        <a href="tambah.php" class="btn btn-tambah">+ Tambah Data Anggota</a>
+        <div class="search-filter-wrapper" style="display: flex; gap: 16px; margin-bottom: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; width: 100%;">
+            <a href="tambah.php" class="btn btn-tambah" style="margin-bottom: 0;">+ Tambah Data Anggota</a>
+            
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <input type="text" id="search-input" placeholder="Cari Nama / NIM Anggota..." style="padding: 10px 16px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; color: #fff; font-size: 14px; outline: none; transition: all 0.3s ease; width: 240px;">
+                <select id="filter-divisi" style="padding: 10px 16px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; color: #fff; font-size: 14px; outline: none; transition: all 0.3s ease; width: 200px; cursor: pointer;">
+                    <option value="">Semua Divisi</option>
+                    <option value="Humas">Humas</option>
+                    <option value="PSDM">PSDM</option>
+                    <option value="Media dan Informasi">Media dan Informasi</option>
+                    <option value="Event/Acara">Event / Acara</option>
+                </select>
+            </div>
+        </div>
 
         <div class="table-wrapper">
             <table>
@@ -132,7 +145,7 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
                         // Looping data dari database
                         while($row = mysqli_fetch_assoc($query)) {
                     ?>
-                            <tr>
+                            <tr class="member-row">
                                 <td><?php echo $no++; ?></td>
                                 <td><?php echo $row['nim']; ?></td>
                                 <td><?php echo $row['nama']; ?></td>
@@ -176,6 +189,11 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
                             </tr>
                     <?php 
                         } // Penutup while
+                    ?>
+                    <tr id="no-results-row" style="display: none;">
+                        <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 24px;">Tidak ada anggota yang cocok dengan pencarian / filter.</td>
+                    </tr>
+                    <?php
                     } else {
                         // Jika data masih kosong
                         echo "<tr><td colspan='7' style='text-align: center;'>Belum ada data anggota.</td></tr>";
@@ -185,6 +203,63 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
             </table>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const filterDivisi = document.getElementById('filter-divisi');
+            const memberRows = document.querySelectorAll('.member-row');
+            const noResultsRow = document.getElementById('no-results-row');
+
+            function filterTable() {
+                const searchQuery = searchInput.value.toLowerCase().trim();
+                const selectedDivisi = filterDivisi.value;
+                let visibleCount = 0;
+
+                memberRows.forEach(row => {
+                    const nim = row.cells[1].textContent.trim();
+                    const nama = row.cells[2].textContent.toLowerCase();
+                    
+                    const badgeSpan = row.cells[3].querySelector('.badge');
+                    const divisi = badgeSpan ? badgeSpan.textContent.trim() : '';
+
+                    const matchesSearch = nama.includes(searchQuery) || nim.includes(searchQuery);
+                    const matchesDivisi = selectedDivisi === '' || divisi === selectedDivisi;
+
+                    if (matchesSearch && matchesDivisi) {
+                        row.style.display = '';
+                        visibleCount++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                if (visibleCount === 0) {
+                    noResultsRow.style.display = '';
+                } else {
+                    noResultsRow.style.display = 'none';
+                }
+            }
+
+            searchInput.addEventListener('input', filterTable);
+            filterDivisi.addEventListener('change', filterTable);
+
+            // Add styles for search-input and filter-divisi focus and options dynamically
+            const style = document.createElement('style');
+            style.textContent = `
+                #search-input:focus, #filter-divisi:focus {
+                    border-color: var(--primary-color) !important;
+                    background: rgba(255, 255, 255, 0.08) !important;
+                    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15) !important;
+                }
+                #filter-divisi option {
+                    background-color: #120c26;
+                    color: #fff;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
 
 </body>
 </html>
