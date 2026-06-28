@@ -35,6 +35,11 @@ if (isset($_POST['update'])) {
     $update_query = "UPDATE anggota_ukm SET nim='$nim', nama='$nama', divisi='$divisi', tahun_angkatan='$angkatan' WHERE id_user='$id'";
 
     if (mysqli_query($conn, $update_query)) {
+        // Catat aktivitas ke log
+        $admin_user = mysqli_real_escape_string($conn, $_SESSION['username']);
+        $log_aksi = mysqli_real_escape_string($conn, "Mengubah data anggota bernama " . $nama);
+        mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
+
         echo "<script>
                 alert('Data anggota berhasil diperbarui!');
                 window.location='dashboard.php';

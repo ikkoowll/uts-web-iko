@@ -20,6 +20,11 @@ if (isset($_POST['simpan'])) {
 
     // Menjalankan query dan mengecek apakah berhasil
     if (mysqli_query($conn, $query)) {
+        // Catat aktivitas ke log
+        $admin_user = mysqli_real_escape_string($conn, $_SESSION['username']);
+        $log_aksi = mysqli_real_escape_string($conn, "Menambahkan anggota baru bernama " . $nama);
+        mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
+
         // Jika berhasil, munculkan pesan dan kembali ke dashboard
         echo "<script>
                 alert('Data anggota berhasil ditambahkan!');

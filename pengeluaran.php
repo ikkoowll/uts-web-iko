@@ -22,6 +22,11 @@ if (isset($_POST['simpan'])) {
                   VALUES ('$judul', '$jumlah', '$tanggal', '$keterangan')";
         
         if (mysqli_query($conn, $query)) {
+            // Catat aktivitas ke log
+            $admin_user = mysqli_real_escape_string($conn, $_SESSION['username']);
+            $log_aksi = mysqli_real_escape_string($conn, "Mencatat pengeluaran kas: " . $judul . " sebesar Rp " . number_format($jumlah, 0, ',', '.'));
+            mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
+
             echo "<script>
                     alert('Pengeluaran kas berhasil dicatat!');
                     window.location='pengeluaran.php';
