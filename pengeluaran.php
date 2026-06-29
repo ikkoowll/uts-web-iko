@@ -52,13 +52,13 @@ $riwayat_query = mysqli_query($conn, "SELECT * FROM pengeluaran_kas ORDER BY tan
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengeluaran Kas - SIM UKM</title>
+    <title>Pengeluaran Kas - SIM HIMATIF</title>
     <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
 
     <div class="navbar">
-        <div class="nav-brand">SIM UKM - Welcome, <?php echo $_SESSION['username']; ?>!</div>
+        <div class="nav-brand">SIM HIMATIF - Welcome, <?php echo $_SESSION['username']; ?>!</div>
         <div style="display: flex; gap: 12px; align-items: center;">
             <a href="dashboard.php">Dashboard</a>
             <a href="pengeluaran.php" class="active-nav">Pengeluaran Kas</a>

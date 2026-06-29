@@ -24,12 +24,12 @@ if (isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - SIM UKM</title>
+    <title>Login - SIM HIMATIF</title>
     <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body class="login-page">
     <div class="login-card">
-        <h2>Login Pengurus UKM</h2>
+        <h2>Login Pengurus HIMATIF</h2>
         
         <?php if(isset($error)) echo "<p class='error-msg'>$error</p>"; ?>
         

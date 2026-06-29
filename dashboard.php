@@ -59,13 +59,13 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard UKM</title>
+    <title>Dashboard HIMATIF</title>
     <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
 
     <div class="navbar">
-        <div class="nav-brand">SIM UKM - Welcome, <?php echo $_SESSION['username']; ?>!</div>
+        <div class="nav-brand">SIM HIMATIF - Welcome, <?php echo $_SESSION['username']; ?>!</div>
         <div style="display: flex; gap: 12px; align-items: center;">
             <a href="dashboard.php" class="active-nav">Dashboard</a>
             <a href="pengeluaran.php">Pengeluaran Kas</a>
@@ -74,7 +74,7 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
     </div>
 
     <div class="container">
-        <h2>Data Anggota Internal UKM</h2>
+        <h2>Data Anggota Internal HIMATIF</h2>
         
         <!-- Statistik Grid -->
         <div class="stats-grid">

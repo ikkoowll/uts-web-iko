@@ -55,13 +55,13 @@ if (isset($_POST['update'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Data Anggota - SIM UKM</title>
+    <title>Edit Data Anggota - SIM HIMATIF</title>
     <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
 
     <div class="navbar">
-        <div class="nav-brand">SIM UKM - Edit Data</div>
+        <div class="nav-brand">SIM HIMATIF - Edit Data</div>
         <div><a href="dashboard.php">Batal / Kembali</a></div>
     </div>
 
