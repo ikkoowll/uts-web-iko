@@ -27,10 +27,8 @@ if (isset($_POST['simpan'])) {
             $log_aksi = mysqli_real_escape_string($conn, "Mencatat pengeluaran kas: " . $judul . " sebesar Rp " . number_format($jumlah, 0, ',', '.'));
             mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
 
-            echo "<script>
-                    alert('Pengeluaran kas berhasil dicatat!');
-                    window.location='pengeluaran.php';
-                  </script>";
+            $_SESSION['swal_success'] = 'Pengeluaran kas berhasil dicatat!';
+            header("Location: pengeluaran.php");
             exit;
         } else {
             $error = "Gagal mencatat pengeluaran: " . mysqli_error($conn);
@@ -143,7 +141,7 @@ $riwayat_query = mysqli_query($conn, "SELECT * FROM pengeluaran_kas ORDER BY tan
                                             <?php echo htmlspecialchars($row['keterangan']) ?: '-'; ?>
                                         </td>
                                         <td>
-                                            <a href="hapus_pengeluaran.php?id=<?php echo $row['id']; ?>" class="btn btn-hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus data pengeluaran ini?');" style="padding: 6px 12px; font-size: 13px;">Hapus</a>
+                                            <a href="hapus_pengeluaran.php?id=<?php echo $row['id']; ?>" class="btn btn-hapus" data-message="Apakah Anda yakin ingin menghapus data pengeluaran ini?" style="padding: 6px 12px; font-size: 13px;">Hapus</a>
                                         </td>
                                     </tr>
                             <?php
@@ -174,6 +172,6 @@ $riwayat_query = mysqli_query($conn, "SELECT * FROM pengeluaran_kas ORDER BY tan
             textarea.style.boxShadow = 'none';
         });
     </script>
-
+    <?php include 'alerts.php'; ?>
 </body>
 </html>

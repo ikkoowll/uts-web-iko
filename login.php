@@ -2,6 +2,11 @@
 session_start();
 require 'config.php';
 
+// Cek status logout dari query parameter
+if (isset($_GET['logout']) && $_GET['logout'] == 'success') {
+    $_SESSION['swal_success'] = 'Anda telah berhasil logout!';
+}
+
 // Logika Login
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
@@ -43,5 +48,6 @@ if (isset($_POST['login'])) {
             Belum punya akun? <a href="register.php">Daftar di sini</a>
         </div>
     </div>
+    <?php include 'alerts.php'; ?>
 </body>
 </html>

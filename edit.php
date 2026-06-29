@@ -21,7 +21,8 @@ $data = mysqli_fetch_assoc($query);
 
 // Jika data tidak ditemukan di database
 if (!$data) {
-    echo "<script>alert('Data tidak ditemukan!'); window.location='dashboard.php';</script>";
+    $_SESSION['swal_error'] = 'Data tidak ditemukan!';
+    header("Location: dashboard.php");
     exit;
 }
 
@@ -40,10 +41,9 @@ if (isset($_POST['update'])) {
         $log_aksi = mysqli_real_escape_string($conn, "Mengubah data anggota bernama " . $nama);
         mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
 
-        echo "<script>
-                alert('Data anggota berhasil diperbarui!');
-                window.location='dashboard.php';
-              </script>";
+        $_SESSION['swal_success'] = 'Data anggota berhasil diperbarui!';
+        header("Location: dashboard.php");
+        exit;
     } else {
         $error = "Gagal mengupdate data: " . mysqli_error($conn);
     }

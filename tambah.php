@@ -25,11 +25,9 @@ if (isset($_POST['simpan'])) {
         $log_aksi = mysqli_real_escape_string($conn, "Menambahkan anggota baru bernama " . $nama);
         mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
 
-        // Jika berhasil, munculkan pesan dan kembali ke dashboard
-        echo "<script>
-                alert('Data anggota berhasil ditambahkan!');
-                window.location='dashboard.php';
-              </script>";
+        $_SESSION['swal_success'] = 'Data anggota berhasil ditambahkan!';
+        header("Location: dashboard.php");
+        exit;
     } else {
         // Jika gagal (misal NIM sudah terdaftar karena UNIQUE), tampilkan error
         $error = "Gagal menambah data: " . mysqli_error($conn);

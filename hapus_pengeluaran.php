@@ -24,16 +24,12 @@ if (isset($_GET['id'])) {
         $log_aksi = mysqli_real_escape_string($conn, "Menghapus catatan pengeluaran kas: " . $judul_terhapus);
         mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
 
-        echo "<script>
-                alert('Data pengeluaran berhasil dihapus!');
-                window.location='pengeluaran.php';
-              </script>";
+        $_SESSION['swal_success'] = 'Data pengeluaran berhasil dihapus!';
+        header("Location: pengeluaran.php");
         exit;
     } else {
-        echo "<script>
-                alert('Gagal menghapus data pengeluaran: " . mysqli_error($conn) . "');
-                window.location='pengeluaran.php';
-              </script>";
+        $_SESSION['swal_error'] = 'Gagal menghapus data pengeluaran: ' . mysqli_error($conn);
+        header("Location: pengeluaran.php");
         exit;
     }
 } else {

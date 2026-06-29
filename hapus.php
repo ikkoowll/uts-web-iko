@@ -29,15 +29,13 @@ if (isset($_GET['id'])) {
         $log_aksi = mysqli_real_escape_string($conn, "Menghapus anggota bernama " . $nama_terhapus);
         mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
 
-        echo "<script>
-                alert('Data berhasil dihapus!');
-                window.location='dashboard.php';
-              </script>";
+        $_SESSION['swal_success'] = 'Data berhasil dihapus!';
+        header("Location: dashboard.php");
+        exit;
     } else {
-        echo "<script>
-                alert('Gagal menghapus data!');
-                window.location='dashboard.php';
-              </script>";
+        $_SESSION['swal_error'] = 'Gagal menghapus data!';
+        header("Location: dashboard.php");
+        exit;
     }
 } else {
     // Jika tidak ada ID di URL, kembalikan ke dashboard

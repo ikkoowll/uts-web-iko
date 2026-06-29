@@ -8,10 +8,7 @@ session_unset();
 // Hancurkan sesi
 session_destroy();
 
-// Arahkan kembali pengguna ke halaman login
-echo "<script>
-        alert('Anda telah berhasil logout!');
-        window.location='login.php';
-      </script>";
+// Arahkan kembali pengguna ke halaman login dengan parameter status
+header("Location: login.php?logout=success");
 exit;
 ?>

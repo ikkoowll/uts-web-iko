@@ -184,7 +184,7 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
                                 </td>
                                 <td>
                                     <a href="edit.php?id=<?php echo $row['id_user']; ?>" class="btn btn-edit">Edit</a>
-                                    <a href="hapus.php?id=<?php echo $row['id_user']; ?>" class="btn btn-hapus" onclick="return confirm('Yakin ingin menghapus data ini?');">Hapus</a>
+                                    <a href="hapus.php?id=<?php echo $row['id_user']; ?>" class="btn btn-hapus" data-message="Yakin ingin menghapus data anggota ini?">Hapus</a>
                                 </td>
                             </tr>
                     <?php 
@@ -297,6 +297,6 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
             document.head.appendChild(style);
         });
     </script>
-
+    <?php include 'alerts.php'; ?>
 </body>
 </html>

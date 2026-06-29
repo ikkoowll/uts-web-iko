@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'config.php';
 
 // Logika Register
@@ -17,10 +18,9 @@ if (isset($_POST['register'])) {
         // Jika username tersedia, simpan ke database
         $query = "INSERT INTO users (nama_lengkap, username, password) VALUES ('$nama', '$username', '$password')";
         if (mysqli_query($conn, $query)) {
-            echo "<script>
-                    alert('Pendaftaran Berhasil! Silakan Login'); 
-                    window.location='login.php';
-                  </script>";
+            $_SESSION['swal_success'] = 'Pendaftaran Berhasil! Silakan Login';
+            header("Location: login.php");
+            exit;
         } else {
             $error = "Pendaftaran Gagal: " . mysqli_error($conn);
         }
