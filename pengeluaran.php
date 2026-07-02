@@ -51,7 +51,7 @@ $riwayat_query = mysqli_query($conn, "SELECT * FROM pengeluaran_kas ORDER BY tan
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengeluaran Kas - SIM HIMATIF</title>
-    <link rel="stylesheet" href="style.css?v=1.1">
+    <link rel="stylesheet" href="style.css?v=1.2">
 </head>
 <body>
 
