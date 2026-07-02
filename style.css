@@ -787,14 +787,15 @@ tbody tr:hover {
     border: 1px solid rgba(255, 255, 255, 0.07) !important;
     border-radius: 20px !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4),
-                0 0 40px rgba(139, 92, 246, 0.1) !important;
+        0 0 40px rgba(139, 92, 246, 0.1) !important;
 }
 
 .swal2-title {
     font-weight: 700 !important;
 }
 
-.swal2-confirm, .swal2-cancel {
+.swal2-confirm,
+.swal2-cancel {
     border-radius: 10px !important;
     padding: 10px 24px !important;
     font-weight: 600 !important;
@@ -802,7 +803,8 @@ tbody tr:hover {
     transition: all 0.3s ease !important;
 }
 
-.swal2-confirm:hover, .swal2-cancel:hover {
+.swal2-confirm:hover,
+.swal2-cancel:hover {
     transform: translateY(-2px) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
@@ -824,13 +826,13 @@ tbody tr:hover {
 
 .footer-container p {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(160, 1, 181, 0.8);
     letter-spacing: 0.5px;
     margin: 0;
 }
 
 .footer-highlight {
-    background: linear-gradient(135deg, #a855f7 0%, #f472b6 100%);
+    background: linear-gradient(135deg, #a855f7 0%, #8f0a4f 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 700;
