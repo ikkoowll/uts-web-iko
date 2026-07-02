@@ -53,5 +53,6 @@ if (isset($_POST['register'])) {
             Sudah punya akun? <a href="login.php">Login di sini</a>
         </div>
     </div>
+    <?php include 'footer.php'; ?>
 </body>
 </html>

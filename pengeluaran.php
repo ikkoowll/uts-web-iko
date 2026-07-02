@@ -172,6 +172,7 @@ $riwayat_query = mysqli_query($conn, "SELECT * FROM pengeluaran_kas ORDER BY tan
             textarea.style.boxShadow = 'none';
         });
     </script>
+    <?php include 'footer.php'; ?>
     <?php include 'alerts.php'; ?>
 </body>
 </html>

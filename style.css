@@ -70,11 +70,13 @@ body {
    ========================================================================== */
 .login-page {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     padding: 20px;
     background: var(--bg-gradient);
+    gap: 20px;
 }
 
 .login-card {
@@ -803,4 +805,32 @@ tbody tr:hover {
 .swal2-confirm:hover, .swal2-cancel:hover {
     transform: translateY(-2px) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ==========================================================================
+   Footer Styles
+   ========================================================================== */
+.main-footer {
+    margin-top: auto;
+    padding: 24px 20px;
+    background: rgba(10, 8, 19, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--card-border);
+    text-align: center;
+    width: 100%;
+}
+
+.footer-container p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.footer-highlight {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
 }

@@ -48,6 +48,7 @@ if (isset($_POST['login'])) {
             Belum punya akun? <a href="register.php">Daftar di sini</a>
         </div>
     </div>
+    <?php include 'footer.php'; ?>
     <?php include 'alerts.php'; ?>
 </body>
 </html>

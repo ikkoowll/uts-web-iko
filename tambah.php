@@ -90,6 +90,6 @@ if (isset($_POST['simpan'])) {
             </form>
         </div>
     </div>
-
+    <?php include 'footer.php'; ?>
 </body>
 </html>

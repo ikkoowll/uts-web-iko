@@ -297,6 +297,7 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
             document.head.appendChild(style);
         });
     </script>
+    <?php include 'footer.php'; ?>
     <?php include 'alerts.php'; ?>
 </body>
 </html>
