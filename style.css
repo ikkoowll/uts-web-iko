@@ -812,24 +812,25 @@ tbody tr:hover {
    ========================================================================== */
 .main-footer {
     margin-top: auto;
-    padding: 24px 20px;
-    background: rgba(10, 8, 19, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid var(--card-border);
+    padding: 20px;
+    background: #021A54;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     width: 100%;
 }
 
 .footer-container p {
     font-size: 14px;
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.8);
     letter-spacing: 0.5px;
     margin: 0;
 }
 
 .footer-highlight {
-    background: var(--primary-gradient);
+    background: linear-gradient(135deg, #a855f7 0%, #f472b6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 700;
