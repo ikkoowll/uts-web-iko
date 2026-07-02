@@ -69,14 +69,13 @@ body {
    Halaman Login & Register
    ========================================================================== */
 .login-page {
+    position: relative;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
     background: var(--bg-gradient);
-    gap: 20px;
 }
 
 .login-card {
@@ -824,16 +823,23 @@ tbody tr:hover {
     width: 100%;
 }
 
+.login-page .main-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
 .footer-container p {
     font-size: 14px;
-    color: rgba(160, 1, 181, 0.8);
+    color: rgba(255, 255, 255, 0.8);
     letter-spacing: 0.5px;
     margin: 0;
 }
 
 .footer-highlight {
-    background: linear-gradient(135deg, #a855f7 0%, #8f0a4f 100%);
+    background: linear-gradient(135deg, #a855f7 0%, #f472b6 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 700;
 }
