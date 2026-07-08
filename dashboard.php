@@ -105,7 +105,12 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
         </div>
         
         <div class="search-filter-wrapper" style="display: flex; gap: 16px; margin-bottom: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; width: 100%;">
-            <a href="tambah.php" class="btn btn-tambah" style="margin-bottom: 0;">+ Tambah Data Anggota</a>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                <a href="tambah.php" class="btn btn-tambah" style="margin-bottom: 0;">+ Tambah Data Anggota</a>
+                <a href="import.php" class="btn btn-import" style="margin-bottom: 0;">Impor Data</a>
+                <a href="export_excel.php" class="btn btn-export-excel" style="margin-bottom: 0;">Ekspor Excel</a>
+                <a href="export_word.php" class="btn btn-export-word" style="margin-bottom: 0;">Ekspor Word</a>
+            </div>
             
             <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                 <input type="text" id="search-input" placeholder="Cari Nama / NIM Anggota..." style="padding: 10px 16px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; color: #fff; font-size: 14px; outline: none; transition: all 0.3s ease; width: 240px;">
