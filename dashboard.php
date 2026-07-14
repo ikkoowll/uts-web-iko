@@ -208,6 +208,146 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
             </table>
         </div>
 
+        <!-- SECTION: PEMANTAUAN KINERJA PROGRAM KERJA (PROKER) -->
+        <div class="proker-section" style="margin-top: 50px; margin-bottom: 40px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
+                <h2 style="margin-bottom: 0;">Kinerja Program Kerja (Proker)</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="tambah_proker.php" class="btn btn-tambah" style="margin-bottom: 0; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">+ Tambah Proker Baru</a>
+                    <a href="tambah_pelaksanaan.php" class="btn btn-tambah" style="margin-bottom: 0;">+ Catat Pelaksanaan Proker</a>
+                </div>
+            </div>
+
+            <!-- Grid Kartu Proker -->
+            <div class="proker-grid">
+                <?php
+                $proker_perf_query = mysqli_query($conn, "
+                    SELECT p.*, COUNT(pp.id_pelaksanaan) AS total_laksana
+                    FROM proker p
+                    LEFT JOIN pelaksanaan_proker pp ON p.id_proker = pp.id_proker
+                    GROUP BY p.id_proker
+                    ORDER BY p.nama_proker ASC
+                ");
+
+                if (mysqli_num_rows($proker_perf_query) > 0) {
+                    while ($p_row = mysqli_fetch_assoc($proker_perf_query)) {
+                        $target = intval($p_row['target_frekuensi_dalam_1_periode']);
+                        $terlaksana = intval($p_row['total_laksana']);
+                        $percent = $target > 0 ? round(($terlaksana / $target) * 100, 1) : 0;
+                        $bar_width = min($percent, 100);
+                        
+                        $is_achieved = $terlaksana >= $target;
+                        $badge_class = $is_achieved ? 'badge-tercapai' : 'badge-belum';
+                        $badge_text = $is_achieved ? 'Tercapai' : 'Belum Tercapai';
+                        $bar_class = $is_achieved ? 'success' : '';
+                ?>
+                        <div class="proker-card">
+                            <div>
+                                <div class="proker-header">
+                                    <span class="proker-name"><?php echo htmlspecialchars($p_row['nama_proker']); ?></span>
+                                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+                                        <span class="proker-badge <?php echo $badge_class; ?>"><?php echo $badge_text; ?></span>
+                                        <a href="hapus_proker.php?id=<?php echo $p_row['id_proker']; ?>" class="btn btn-hapus" data-message="Yakin ingin menghapus program kerja ini? Semua data pelaksanaan terkait juga akan dihapus!" style="padding: 2px 6px; font-size: 10px; border-radius: 4px; line-height: 1;">Hapus Proker</a>
+                                    </div>
+                                </div>
+                                <div class="proker-stats">
+                                    <span>Progress: <strong><?php echo $terlaksana; ?></strong> / <?php echo $target; ?> Kali</span>
+                                    <span class="progress-text"><?php echo $percent; ?>%</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar <?php echo $bar_class; ?>" style="width: <?php echo $bar_width; ?>%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                <?php
+                    }
+                } else {
+                    echo "<p style='grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 20px;'>Belum ada Program Kerja. Tambahkan proker baru terlebih dahulu.</p>";
+                }
+                ?>
+            </div>
+
+            <!-- Tabel Detail Pelaksanaan -->
+            <h3 style="margin-top: 30px; margin-bottom: 16px; font-size: 18px; font-weight: 700; color: #fff;">Detail Realisasi Pelaksanaan</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Program Kerja</th>
+                            <th>Pelaksanaan Ke</th>
+                            <th>Tanggal Pelaksanaan</th>
+                            <th>Jumlah Peserta</th>
+                            <th>Tren Peserta</th>
+                            <th>Dampak ke Himpunan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $exec_query = mysqli_query($conn, "
+                            SELECT pp.*, p.nama_proker 
+                            FROM pelaksanaan_proker pp 
+                            JOIN proker p ON pp.id_proker = p.id_proker 
+                            ORDER BY pp.tanggal_pelaksanaan DESC, pp.id_pelaksanaan DESC
+                        ");
+
+                        if (mysqli_num_rows($exec_query) > 0) {
+                            $no_exec = 1;
+                            while ($e_row = mysqli_fetch_assoc($exec_query)) {
+                                // Hitung tren dibanding pelaksanaan_ke sebelumnya
+                                $curr_ke = intval($e_row['pelaksanaan_ke']);
+                                $curr_peserta = intval($e_row['jumlah_peserta']);
+                                $id_pr = $e_row['id_proker'];
+
+                                $prev_q = mysqli_query($conn, "
+                                    SELECT jumlah_peserta 
+                                    FROM pelaksanaan_proker 
+                                    WHERE id_proker = '$id_pr' 
+                                      AND pelaksanaan_ke < '$curr_ke' 
+                                    ORDER BY pelaksanaan_ke DESC 
+                                    LIMIT 1
+                                ");
+                                $prev_data = mysqli_fetch_assoc($prev_q);
+
+                                if ($prev_data) {
+                                    $prev_peserta = intval($prev_data['jumlah_peserta']);
+                                    if ($curr_peserta > $prev_peserta) {
+                                        $trend_html = '<span class="trend-badge trend-up" title="Peserta naik dari ' . $prev_peserta . '">▲ Naik</span>';
+                                    } elseif ($curr_peserta < $prev_peserta) {
+                                        $trend_html = '<span class="trend-badge trend-down" title="Peserta turun dari ' . $prev_peserta . '">▼ Turun</span>';
+                                    } else {
+                                        $trend_html = '<span class="trend-badge trend-stable" title="Peserta stabil">▬ Stabil</span>';
+                                    }
+                                } else {
+                                    $trend_html = '<span class="trend-badge trend-neutral">Pelaksanaan Perdana</span>';
+                                }
+                        ?>
+                                <tr>
+                                    <td><?php echo $no_exec++; ?></td>
+                                    <td style="font-weight: 600; color: #fff;"><?php echo htmlspecialchars($e_row['nama_proker']); ?></td>
+                                    <td>Pelaksanaan ke-<?php echo $e_row['pelaksanaan_ke']; ?></td>
+                                    <td><?php echo date('d-m-Y', strtotime($e_row['tanggal_pelaksanaan'])); ?></td>
+                                    <td><strong><?php echo number_format($curr_peserta, 0, ',', '.'); ?></strong> orang</td>
+                                    <td><?php echo $trend_html; ?></td>
+                                    <td style="max-width: 250px; font-size: 14px; line-height: 1.4; color: var(--text-primary); word-wrap: break-word; white-space: normal;">
+                                        <?php echo nl2br(htmlspecialchars($e_row['dampak_ke_himpunan'])); ?>
+                                    </td>
+                                    <td>
+                                        <a href="hapus_pelaksanaan.php?id=<?php echo $e_row['id_pelaksanaan']; ?>" class="btn btn-hapus" data-message="Yakin ingin menghapus catatan pelaksanaan ini?">Hapus</a>
+                                    </td>
+                                </tr>
+                        <?php
+                            }
+                        } else {
+                            echo "<tr><td colspan='8' style='text-align: center; color: var(--text-secondary); padding: 24px;'>Belum ada catatan pelaksanaan proker. Silakan klik tombol 'Catat Pelaksanaan Proker' untuk menambah data.</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- Aktivitas Terbaru Section -->
         <div class="activity-card" style="margin-top: 40px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);">
             <h3 style="margin-bottom: 20px; font-size: 18px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px;">
