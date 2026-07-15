@@ -363,7 +363,14 @@ $avg_percentage = $total_proker > 0 ? round($sum_percentages / $total_proker, 1)
                     echo "<td>" . date('d-m-Y', strtotime($e_row['tanggal_pelaksanaan'])) . "</td>";
                     echo "<td>" . number_format($curr_peserta, 0, ',', '.') . " Orang</td>";
                     echo "<td>" . $trend_str . "</td>";
-                    echo "<td>Rp " . number_format($curr_pengeluaran, 0, ',', '.') . "</td>";
+                    echo "<td>";
+                    echo "<strong>Rp " . number_format($curr_pengeluaran, 0, ',', '.') . "</strong><br>";
+                    echo "<font size='1' color='#64748b'>";
+                    echo "Kas: Rp " . number_format($e_row['dana_dari_kas'], 0, ',', '.') . "<br>";
+                    echo "Spon: Rp " . number_format($e_row['dana_dari_sponsor'], 0, ',', '.') . "<br>";
+                    echo "Mhs: Rp " . number_format($e_row['dana_dari_kemahasiswaan'], 0, ',', '.');
+                    echo "</font>";
+                    echo "</td>";
                     echo "<td>" . $trend_pengeluaran_str . "</td>";
                     echo "<td>" . nl2br(htmlspecialchars($e_row['dampak_ke_himpunan'])) . "</td>";
                     echo "<td>" . nl2br(htmlspecialchars($e_row['evaluasi_kegiatan'])) . "</td>";
