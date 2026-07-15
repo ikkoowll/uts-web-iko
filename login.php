@@ -30,7 +30,7 @@ if (isset($_POST['login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - SIM HIMATIF</title>
-    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="style.css?v=1.3">
 </head>
 <body class="login-page">
     <div class="login-card">
@@ -41,6 +41,9 @@ if (isset($_POST['login'])) {
         <form method="POST" action="">
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
+            <div style="text-align: right; margin-top: -6px; margin-bottom: 16px;">
+                <a href="lupa_password.php" style="color: var(--primary-color); font-size: 13px; text-decoration: none; font-weight: 600; transition: color 0.3s ease;">Lupa Password?</a>
+            </div>
             <button type="submit" name="login">Masuk ke Dashboard</button>
         </form>
 

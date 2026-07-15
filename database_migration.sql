@@ -29,3 +29,8 @@ SELECT * FROM (
 WHERE NOT EXISTS (
   SELECT 1 FROM `proker` LIMIT 1
 );
+
+-- Ensure users table has email and reset token columns for forgot password features
+ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `email` VARCHAR(100) NOT NULL DEFAULT 'admin@himatif.org' AFTER `username`;
+ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `reset_token` VARCHAR(255) NULL AFTER `password`;
+ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `reset_expiry` DATETIME NULL AFTER `reset_token`;
