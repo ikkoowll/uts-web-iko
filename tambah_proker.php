@@ -15,7 +15,7 @@ if (isset($_POST['simpan'])) {
     if (empty($nama_proker) || $target <= 0) {
         $error = "Nama proker dan target frekuensi harus diisi dengan benar!";
     } else {
-        $query = "INSERT INTO proker (nama_proker, target_frekuensi_dalam_1_periode) VALUES ('$nama_proker', '$target')";
+        $query = "INSERT INTO proker (nama_proker, target_frekuensi) VALUES ('$nama_proker', '$target')";
         if (mysqli_query($conn, $query)) {
             // Catat log
             $admin_user = mysqli_real_escape_string($conn, $_SESSION['username']);

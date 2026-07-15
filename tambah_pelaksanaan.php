@@ -83,7 +83,7 @@ if (isset($_POST['simpan'])) {
                             <option value="" disabled selected>-- Pilih Program Kerja --</option>
                             <?php foreach ($proker_list as $p): ?>
                                 <option value="<?php echo $p['id_proker']; ?>">
-                                    <?php echo htmlspecialchars($p['nama_proker']); ?> (Target: <?php echo $p['target_frekuensi_dalam_1_periode']; ?>x)
+                                    <?php echo htmlspecialchars($p['nama_proker']); ?> (Target: <?php echo $p['target_frekuensi']; ?>x)
                                 </option>
                             <?php endforeach; ?>
                         </select>

@@ -51,6 +51,31 @@ $query_pay = mysqli_query($conn, "SELECT * FROM pembayaran_kas WHERE tahun = '$t
 while ($pay = mysqli_fetch_assoc($query_pay)) {
     $payments[$pay['id_anggota']][$pay['id_bulan']] = $pay;
 }
+
+// Ambil data pelaksanaan untuk grafik
+$chart_proker_data = [];
+$chart_proker_query = mysqli_query($conn, "SELECT id_proker, nama_proker FROM proker ORDER BY nama_proker ASC");
+while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
+    $id_cp = $cp['id_proker'];
+    $cp_exec_q = mysqli_query($conn, "
+        SELECT pelaksanaan_ke, jumlah_peserta, tanggal_pelaksanaan 
+        FROM pelaksanaan_proker 
+        WHERE id_proker = '$id_cp' 
+        ORDER BY pelaksanaan_ke ASC
+    ");
+    $execs = [];
+    while ($cpe = mysqli_fetch_assoc($cp_exec_q)) {
+        $execs[] = [
+            'ke' => 'Pelaksanaan Ke-' . $cpe['pelaksanaan_ke'],
+            'peserta' => intval($cpe['jumlah_peserta']),
+            'tanggal' => date('d-m-Y', strtotime($cpe['tanggal_pelaksanaan']))
+        ];
+    }
+    $chart_proker_data[$id_cp] = [
+        'nama' => $cp['nama_proker'],
+        'executions' => $execs
+    ];
+}
 ?>
 
 
@@ -215,6 +240,10 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                     <a href="tambah_proker.php" class="btn btn-tambah" style="margin-bottom: 0; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">+ Tambah Proker Baru</a>
                     <a href="tambah_pelaksanaan.php" class="btn btn-tambah" style="margin-bottom: 0;">+ Catat Pelaksanaan Proker</a>
+                    <a href="export_kinerja.php" class="btn btn-export-word" style="margin-bottom: 0; background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Unduh Laporan Kinerja
+                    </a>
                 </div>
             </div>
 
@@ -231,7 +260,7 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
 
                 if (mysqli_num_rows($proker_perf_query) > 0) {
                     while ($p_row = mysqli_fetch_assoc($proker_perf_query)) {
-                        $target = intval($p_row['target_frekuensi_dalam_1_periode']);
+                        $target = intval($p_row['target_frekuensi']);
                         $terlaksana = intval($p_row['total_laksana']);
                         $percent = $target > 0 ? round(($terlaksana / $target) * 100, 1) : 0;
                         $bar_width = min($percent, 100);
@@ -241,13 +270,13 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
                         $badge_text = $is_achieved ? 'Tercapai' : 'Belum Tercapai';
                         $bar_class = $is_achieved ? 'success' : '';
                 ?>
-                        <div class="proker-card">
+                        <div class="proker-card clickable-card" data-id-proker="<?php echo $p_row['id_proker']; ?>">
                             <div>
                                 <div class="proker-header">
                                     <span class="proker-name"><?php echo htmlspecialchars($p_row['nama_proker']); ?></span>
                                     <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
                                         <span class="proker-badge <?php echo $badge_class; ?>"><?php echo $badge_text; ?></span>
-                                        <a href="hapus_proker.php?id=<?php echo $p_row['id_proker']; ?>" class="btn btn-hapus" data-message="Yakin ingin menghapus program kerja ini? Semua data pelaksanaan terkait juga akan dihapus!" style="padding: 2px 6px; font-size: 10px; border-radius: 4px; line-height: 1;">Hapus Proker</a>
+                                        <a href="hapus_proker.php?id=<?php echo $p_row['id_proker']; ?>" class="btn btn-hapus" data-message="Yakin ingin menghapus program kerja ini? Semua data pelaksanaan terkait juga akan dihapus!" style="padding: 2px 6px; font-size: 10px; border-radius: 4px; line-height: 1;" onclick="event.stopPropagation();">Hapus Proker</a>
                                     </div>
                                 </div>
                                 <div class="proker-stats">
@@ -267,8 +296,29 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
                 ?>
             </div>
 
+            <!-- SECTION: GRAFIK TREN PESERTA (CHART.JS) -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Analisis Tren Partisipasi Peserta</h3>
+                    <select id="chart-proker-selector" class="chart-select">
+                        <option value="" disabled selected>-- Pilih Program Kerja --</option>
+                        <?php foreach ($chart_proker_data as $id => $data): ?>
+                            <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($data['nama']); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
+                <div id="chart-empty-state" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                    <p>Klik salah satu kartu Program Kerja di atas atau pilih proker dari menu drop-down untuk melihat visualisasi tren jumlah peserta.</p>
+                </div>
+                
+                <div id="chart-canvas-container" style="display: none; position: relative; height: 350px; width: 100%;">
+                    <canvas id="participants-trend-chart"></canvas>
+                </div>
+            </div>
+
             <!-- Tabel Detail Pelaksanaan -->
-            <h3 style="margin-top: 30px; margin-bottom: 16px; font-size: 18px; font-weight: 700; color: #fff;">Detail Realisasi Pelaksanaan</h3>
+            <h3 style="margin-top: 30px; margin-bottom: 16px; font-size: 18px; font-weight: 700; color: var(--title-color);">Detail Realisasi Pelaksanaan</h3>
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -325,7 +375,7 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
                         ?>
                                 <tr>
                                     <td><?php echo $no_exec++; ?></td>
-                                    <td style="font-weight: 600; color: #fff;"><?php echo htmlspecialchars($e_row['nama_proker']); ?></td>
+                                    <td style="font-weight: 600; color: var(--title-color);"><?php echo htmlspecialchars($e_row['nama_proker']); ?></td>
                                     <td>Pelaksanaan ke-<?php echo $e_row['pelaksanaan_ke']; ?></td>
                                     <td><?php echo date('d-m-Y', strtotime($e_row['tanggal_pelaksanaan'])); ?></td>
                                     <td><strong><?php echo number_format($curr_peserta, 0, ',', '.'); ?></strong> orang</td>
@@ -431,8 +481,8 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
                     box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15) !important;
                 }
                 #filter-divisi option {
-                    background-color: #120c26;
-                    color: #fff;
+                    background-color: var(--select-option-bg);
+                    color: var(--input-color);
                 }
                 .activity-item:last-child {
                     border-bottom: none !important;
@@ -440,6 +490,200 @@ while ($pay = mysqli_fetch_assoc($query_pay)) {
                 }
             `;
             document.head.appendChild(style);
+        });
+    </script>
+
+    <!-- Load Chart.js Library via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const prokerData = <?php echo json_encode($chart_proker_data); ?>;
+            const selector = document.getElementById('chart-proker-selector');
+            const emptyState = document.getElementById('chart-empty-state');
+            const canvasContainer = document.getElementById('chart-canvas-container');
+            const clickableCards = document.querySelectorAll('.proker-card.clickable-card');
+            
+            let chartInstance = null;
+
+            // Get theme colors dynamically based on light-mode state
+            function getThemeColors() {
+                const isLight = document.body.classList.contains('light-mode');
+                return {
+                    textColor: isLight ? '#475569' : '#9ca3af',
+                    gridColor: isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.06)',
+                    accentColor: isLight ? '#7c3aed' : '#a855f7',
+                    pointBgColor: isLight ? '#db2777' : '#d946ef'
+                };
+            }
+
+            function renderChart(prokerId) {
+                if (!prokerId || !prokerData[prokerId]) return;
+                
+                const dataInfo = prokerData[prokerId];
+                const executions = dataInfo.executions;
+
+                if (executions.length === 0) {
+                    emptyState.style.display = 'block';
+                    emptyState.innerHTML = `<p style="color: var(--text-secondary); font-weight: 500; text-align: center; padding: 20px;">Belum ada catatan pelaksanaan untuk program kerja <strong>"${dataInfo.nama}"</strong>.</p>`;
+                    canvasContainer.style.display = 'none';
+                    return;
+                }
+
+                emptyState.style.display = 'none';
+                canvasContainer.style.display = 'block';
+
+                const labels = executions.map(e => e.ke);
+                const values = executions.map(e => e.peserta);
+                const tooltips = executions.map(e => e.tanggal);
+
+                const colors = getThemeColors();
+
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+
+                const ctx = document.getElementById('participants-trend-chart').getContext('2d');
+                
+                // Gradient effect
+                const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                gradient.addColorStop(0, colors.accentColor + '30');
+                gradient.addColorStop(1, colors.accentColor + '00');
+
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Jumlah Peserta',
+                            data: values,
+                            borderColor: colors.accentColor,
+                            borderWidth: 3,
+                            backgroundColor: gradient,
+                            fill: true,
+                            tension: 0.35,
+                            pointBackgroundColor: colors.pointBgColor,
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                titleColor: '#fff',
+                                bodyColor: '#fff',
+                                padding: 12,
+                                cornerRadius: 8,
+                                displayColors: false,
+                                callbacks: {
+                                    afterLabel: function(context) {
+                                        return 'Tanggal: ' + tooltips[context.dataIndex];
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: colors.gridColor
+                                },
+                                ticks: {
+                                    color: colors.textColor,
+                                    font: {
+                                        family: 'Plus Jakarta Sans',
+                                        weight: '500'
+                                    }
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: colors.gridColor
+                                },
+                                ticks: {
+                                    color: colors.textColor,
+                                    font: {
+                                        family: 'Plus Jakarta Sans',
+                                        weight: '500'
+                                    },
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Dropdown change listener
+            selector.addEventListener('change', function() {
+                const val = this.value;
+                renderChart(val);
+                
+                // Synchronize active card outline
+                clickableCards.forEach(card => {
+                    if (card.dataset.idProker === val) {
+                        card.classList.add('active-card');
+                    } else {
+                        card.classList.remove('active-card');
+                    }
+                });
+            });
+
+            // Card click listener (micro-interactions)
+            clickableCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.btn-hapus')) {
+                        return; // Ignore delete button click
+                    }
+                    
+                    const prokerId = this.dataset.idProker;
+                    selector.value = prokerId;
+                    renderChart(prokerId);
+                    
+                    clickableCards.forEach(c => c.classList.remove('active-card'));
+                    this.classList.add('active-card');
+                    
+                    document.querySelector('.chart-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                });
+            });
+
+            // Re-render chart on theme switches to update grid and text colors
+            window.addEventListener('themechanged', function() {
+                if (chartInstance && selector.value) {
+                    renderChart(selector.value);
+                }
+            });
+
+            // Select first proker that has execution by default
+            let initialProkerId = '';
+            for (const id in prokerData) {
+                if (prokerData[id].executions.length > 0) {
+                    initialProkerId = id;
+                    break;
+                }
+            }
+            
+            if (initialProkerId) {
+                selector.value = initialProkerId;
+                renderChart(initialProkerId);
+                const firstActiveCard = document.querySelector(`.proker-card[data-id-proker="${initialProkerId}"]`);
+                if (firstActiveCard) firstActiveCard.classList.add('active-card');
+            } else {
+                // fallback to first element
+                const firstOption = selector.querySelector('option:not([disabled])');
+                if (firstOption) {
+                    selector.value = firstOption.value;
+                    renderChart(firstOption.value);
+                    const firstActiveCard = document.querySelector(`.proker-card[data-id-proker="${firstOption.value}"]`);
+                    if (firstActiveCard) firstActiveCard.classList.add('active-card');
+                }
+            }
         });
     </script>
     <?php include 'footer.php'; ?>

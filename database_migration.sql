@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS `proker` (
   `id_proker` INT AUTO_INCREMENT PRIMARY KEY,
   `nama_proker` VARCHAR(255) NOT NULL,
-  `target_frekuensi_dalam_1_periode` INT NOT NULL
+  `target_frekuensi` INT NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `pelaksanaan_proker` (
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `pelaksanaan_proker` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Seed default prokers if empty
-INSERT INTO `proker` (`nama_proker`, `target_frekuensi_dalam_1_periode`) 
+INSERT INTO `proker` (`nama_proker`, `target_frekuensi`) 
 SELECT * FROM (
   SELECT 'Rapat Kerja (Raker)' AS nama_proker, 1 AS target UNION ALL
   SELECT 'Latihan Dasar Kepemimpinan (LDKM)', 1 UNION ALL
