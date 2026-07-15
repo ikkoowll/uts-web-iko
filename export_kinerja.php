@@ -35,6 +35,11 @@ $total_peserta_q = mysqli_query($conn, "SELECT SUM(jumlah_peserta) as total FROM
 $total_peserta_d = mysqli_fetch_assoc($total_peserta_q);
 $total_peserta = $total_peserta_d['total'] ?? 0;
 
+// 5. Total pengeluaran proker
+$total_cost_q = mysqli_query($conn, "SELECT SUM(total_pengeluaran) as total FROM pelaksanaan_proker");
+$total_cost_d = mysqli_fetch_assoc($total_cost_q);
+$total_cost = $total_cost_d['total'] ?? 0;
+
 // 4. Rata-rata persentase keterlaksanaan
 $proker_list_q = mysqli_query($conn, "
     SELECT p.target_frekuensi, COUNT(pp.id_pelaksanaan) as total_laksana
@@ -211,21 +216,25 @@ $avg_percentage = $total_proker > 0 ? round($sum_percentages / $total_proker, 1)
     <!-- RINGKASAN STATISTIK -->
     <table class="stats-summary">
         <tr>
-            <td>
+            <td style="width: 20%;">
                 <div class="stats-label">Total Program Kerja</div>
                 <div class="stats-val"><?php echo $total_proker; ?></div>
             </td>
-            <td>
+            <td style="width: 20%;">
                 <div class="stats-label">Total Pelaksanaan</div>
                 <div class="stats-val"><?php echo $total_exec; ?></div>
             </td>
-            <td>
+            <td style="width: 20%;">
                 <div class="stats-label">Rerata Ketercapaian</div>
                 <div class="stats-val"><?php echo $avg_percentage; ?>%</div>
             </td>
-            <td>
+            <td style="width: 20%;">
                 <div class="stats-label">Total Peserta Hadir</div>
                 <div class="stats-val"><?php echo number_format($total_peserta, 0, ',', '.'); ?> Orang</div>
+            </td>
+            <td style="width: 20%;">
+                <div class="stats-label">Total Pengeluaran Proker</div>
+                <div class="stats-val">Rp <?php echo number_format($total_cost, 0, ',', '.'); ?></div>
             </td>
         </tr>
     </table>
@@ -283,12 +292,15 @@ $avg_percentage = $total_proker > 0 ? round($sum_percentages / $total_proker, 1)
         <thead>
             <tr>
                 <th width="5%">No</th>
-                <th width="25%">Nama Program Kerja</th>
-                <th width="12%">Pelaksanaan</th>
-                <th width="13%">Tanggal</th>
-                <th width="10%">Peserta</th>
-                <th width="10%">Tren</th>
-                <th width="25%">Dampak Terhadap Himpunan</th>
+                <th width="20%">Nama Program Kerja</th>
+                <th width="10%">Pelaksanaan</th>
+                <th width="10%">Tanggal</th>
+                <th width="8%">Peserta</th>
+                <th width="10%">Tren Peserta</th>
+                <th width="10%">Pengeluaran</th>
+                <th width="12%">Tren Pengeluaran</th>
+                <th width="15%">Dampak Terhadap Himpunan</th>
+                <th width="15%">Evaluasi Kegiatan</th>
             </tr>
         </thead>
         <tbody>
@@ -305,11 +317,12 @@ $avg_percentage = $total_proker > 0 ? round($sum_percentages / $total_proker, 1)
                 while ($e_row = mysqli_fetch_assoc($execs)) {
                     $curr_ke = intval($e_row['pelaksanaan_ke']);
                     $curr_peserta = intval($e_row['jumlah_peserta']);
+                    $curr_pengeluaran = intval($e_row['total_pengeluaran']);
                     $id_pr = $e_row['id_proker'];
 
-                    // Hitung Tren
+                    // Hitung Tren Peserta dan Pengeluaran
                     $prev_q = mysqli_query($conn, "
-                        SELECT jumlah_peserta 
+                        SELECT jumlah_peserta, total_pengeluaran 
                         FROM pelaksanaan_proker 
                         WHERE id_proker = '$id_pr' 
                           AND pelaksanaan_ke < '$curr_ke' 
@@ -319,6 +332,7 @@ $avg_percentage = $total_proker > 0 ? round($sum_percentages / $total_proker, 1)
                     $prev_data = mysqli_fetch_assoc($prev_q);
 
                     if ($prev_data) {
+                        // Tren Peserta
                         $prev_peserta = intval($prev_data['jumlah_peserta']);
                         if ($curr_peserta > $prev_peserta) {
                             $trend_str = '<span class="trend-up">▲ Naik</span>';
@@ -327,8 +341,19 @@ $avg_percentage = $total_proker > 0 ? round($sum_percentages / $total_proker, 1)
                         } else {
                             $trend_str = '<span class="trend-stable">▬ Stabil</span>';
                         }
+
+                        // Tren Pengeluaran
+                        $prev_pengeluaran = intval($prev_data['total_pengeluaran']);
+                        if ($curr_pengeluaran > $prev_pengeluaran) {
+                            $trend_pengeluaran_str = '<span class="trend-down">⚠️ Meningkat</span>';
+                        } elseif ($curr_pengeluaran < $prev_pengeluaran) {
+                            $trend_pengeluaran_str = '<span class="trend-up">📉 Efisiensi</span>';
+                        } else {
+                            $trend_pengeluaran_str = '<span class="trend-stable">▬ Stabil</span>';
+                        }
                     } else {
                         $trend_str = '<span class="trend-neutral">Perdana</span>';
+                        $trend_pengeluaran_str = '<span class="trend-neutral">Perdana</span>';
                     }
 
                     echo "<tr>";
@@ -338,11 +363,14 @@ $avg_percentage = $total_proker > 0 ? round($sum_percentages / $total_proker, 1)
                     echo "<td>" . date('d-m-Y', strtotime($e_row['tanggal_pelaksanaan'])) . "</td>";
                     echo "<td>" . number_format($curr_peserta, 0, ',', '.') . " Orang</td>";
                     echo "<td>" . $trend_str . "</td>";
+                    echo "<td>Rp " . number_format($curr_pengeluaran, 0, ',', '.') . "</td>";
+                    echo "<td>" . $trend_pengeluaran_str . "</td>";
                     echo "<td>" . nl2br(htmlspecialchars($e_row['dampak_ke_himpunan'])) . "</td>";
+                    echo "<td>" . nl2br(htmlspecialchars($e_row['evaluasi_kegiatan'])) . "</td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='7' style='text-align: center;'>Belum ada catatan pelaksanaan proker.</td></tr>";
+                echo "<tr><td colspan='10' style='text-align: center;'>Belum ada catatan pelaksanaan proker.</td></tr>";
             }
             ?>
         </tbody>

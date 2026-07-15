@@ -58,7 +58,7 @@ $chart_proker_query = mysqli_query($conn, "SELECT id_proker, nama_proker FROM pr
 while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
     $id_cp = $cp['id_proker'];
     $cp_exec_q = mysqli_query($conn, "
-        SELECT pelaksanaan_ke, jumlah_peserta, tanggal_pelaksanaan 
+        SELECT pelaksanaan_ke, jumlah_peserta, total_pengeluaran, tanggal_pelaksanaan 
         FROM pelaksanaan_proker 
         WHERE id_proker = '$id_cp' 
         ORDER BY pelaksanaan_ke ASC
@@ -68,6 +68,7 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
         $execs[] = [
             'ke' => 'Pelaksanaan Ke-' . $cpe['pelaksanaan_ke'],
             'peserta' => intval($cpe['jumlah_peserta']),
+            'pengeluaran' => intval($cpe['total_pengeluaran']),
             'tanggal' => date('d-m-Y', strtotime($cpe['tanggal_pelaksanaan']))
         ];
     }
@@ -329,7 +330,10 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
                             <th>Tanggal Pelaksanaan</th>
                             <th>Jumlah Peserta</th>
                             <th>Tren Peserta</th>
+                            <th>Total Pengeluaran</th>
+                            <th>Tren Pengeluaran</th>
                             <th>Dampak ke Himpunan</th>
+                            <th>Evaluasi Kegiatan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -348,10 +352,11 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
                                 // Hitung tren dibanding pelaksanaan_ke sebelumnya
                                 $curr_ke = intval($e_row['pelaksanaan_ke']);
                                 $curr_peserta = intval($e_row['jumlah_peserta']);
+                                $curr_pengeluaran = intval($e_row['total_pengeluaran']);
                                 $id_pr = $e_row['id_proker'];
 
                                 $prev_q = mysqli_query($conn, "
-                                    SELECT jumlah_peserta 
+                                    SELECT jumlah_peserta, total_pengeluaran 
                                     FROM pelaksanaan_proker 
                                     WHERE id_proker = '$id_pr' 
                                       AND pelaksanaan_ke < '$curr_ke' 
@@ -361,6 +366,7 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
                                 $prev_data = mysqli_fetch_assoc($prev_q);
 
                                 if ($prev_data) {
+                                    // Tren Peserta
                                     $prev_peserta = intval($prev_data['jumlah_peserta']);
                                     if ($curr_peserta > $prev_peserta) {
                                         $trend_html = '<span class="trend-badge trend-up" title="Peserta naik dari ' . $prev_peserta . '">▲ Naik</span>';
@@ -369,8 +375,19 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
                                     } else {
                                         $trend_html = '<span class="trend-badge trend-stable" title="Peserta stabil">▬ Stabil</span>';
                                     }
+
+                                    // Tren Pengeluaran
+                                    $prev_pengeluaran = intval($prev_data['total_pengeluaran']);
+                                    if ($curr_pengeluaran > $prev_pengeluaran) {
+                                        $trend_pengeluaran_html = '<span class="trend-badge trend-down" title="Pengeluaran naik dari Rp ' . number_format($prev_pengeluaran, 0, ',', '.') . '">⚠️ Meningkat</span>';
+                                    } elseif ($curr_pengeluaran < $prev_pengeluaran) {
+                                        $trend_pengeluaran_html = '<span class="trend-badge trend-up" title="Pengeluaran turun dari Rp ' . number_format($prev_pengeluaran, 0, ',', '.') . '">📉 Efisiensi</span>';
+                                    } else {
+                                        $trend_pengeluaran_html = '<span class="trend-badge trend-stable" title="Pengeluaran stabil">▬ Stabil</span>';
+                                    }
                                 } else {
                                     $trend_html = '<span class="trend-badge trend-neutral">Pelaksanaan Perdana</span>';
+                                    $trend_pengeluaran_html = '<span class="trend-badge trend-neutral">Pelaksanaan Perdana</span>';
                                 }
                         ?>
                                 <tr>
@@ -380,8 +397,13 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
                                     <td><?php echo date('d-m-Y', strtotime($e_row['tanggal_pelaksanaan'])); ?></td>
                                     <td><strong><?php echo number_format($curr_peserta, 0, ',', '.'); ?></strong> orang</td>
                                     <td><?php echo $trend_html; ?></td>
-                                    <td style="max-width: 250px; font-size: 14px; line-height: 1.4; color: var(--text-primary); word-wrap: break-word; white-space: normal;">
+                                    <td><strong>Rp <?php echo number_format($curr_pengeluaran, 0, ',', '.'); ?></strong></td>
+                                    <td><?php echo $trend_pengeluaran_html; ?></td>
+                                    <td style="max-width: 200px; font-size: 14px; line-height: 1.4; color: var(--text-primary); word-wrap: break-word; white-space: normal;">
                                         <?php echo nl2br(htmlspecialchars($e_row['dampak_ke_himpunan'])); ?>
+                                    </td>
+                                    <td style="max-width: 200px; font-size: 14px; line-height: 1.4; color: var(--text-primary); word-wrap: break-word; white-space: normal;">
+                                        <?php echo nl2br(htmlspecialchars($e_row['evaluasi_kegiatan'])); ?>
                                     </td>
                                     <td>
                                         <a href="hapus_pelaksanaan.php?id=<?php echo $e_row['id_pelaksanaan']; ?>" class="btn btn-hapus" data-message="Yakin ingin menghapus catatan pelaksanaan ini?">Hapus</a>
@@ -390,7 +412,7 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
                         <?php
                             }
                         } else {
-                            echo "<tr><td colspan='8' style='text-align: center; color: var(--text-secondary); padding: 24px;'>Belum ada catatan pelaksanaan proker. Silakan klik tombol 'Catat Pelaksanaan Proker' untuk menambah data.</td></tr>";
+                            echo "<tr><td colspan='11' style='text-align: center; color: var(--text-secondary); padding: 24px;'>Belum ada catatan pelaksanaan proker. Silakan klik tombol 'Catat Pelaksanaan Proker' untuk menambah data.</td></tr>";
                         }
                         ?>
                     </tbody>
@@ -534,6 +556,7 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
 
                 const labels = executions.map(e => e.ke);
                 const values = executions.map(e => e.peserta);
+                const expenses = executions.map(e => e.pengeluaran);
                 const tooltips = executions.map(e => e.tanggal);
 
                 const colors = getThemeColors();
@@ -545,35 +568,65 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
                 const ctx = document.getElementById('participants-trend-chart').getContext('2d');
                 
                 // Gradient effect
-                const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-                gradient.addColorStop(0, colors.accentColor + '30');
-                gradient.addColorStop(1, colors.accentColor + '00');
+                const gradientPeserta = ctx.createLinearGradient(0, 0, 0, 300);
+                gradientPeserta.addColorStop(0, colors.accentColor + '30');
+                gradientPeserta.addColorStop(1, colors.accentColor + '00');
+
+                const gradientPengeluaran = ctx.createLinearGradient(0, 0, 0, 300);
+                gradientPengeluaran.addColorStop(0, '#10b98130');
+                gradientPengeluaran.addColorStop(1, '#10b98100');
 
                 chartInstance = new Chart(ctx, {
                     type: 'line',
                     data: {
                         labels: labels,
-                        datasets: [{
-                            label: 'Jumlah Peserta',
-                            data: values,
-                            borderColor: colors.accentColor,
-                            borderWidth: 3,
-                            backgroundColor: gradient,
-                            fill: true,
-                            tension: 0.35,
-                            pointBackgroundColor: colors.pointBgColor,
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 2,
-                            pointRadius: 6,
-                            pointHoverRadius: 8
-                        }]
+                        datasets: [
+                            {
+                                label: 'Jumlah Peserta',
+                                data: values,
+                                borderColor: colors.accentColor,
+                                borderWidth: 3,
+                                backgroundColor: gradientPeserta,
+                                fill: true,
+                                tension: 0.35,
+                                pointBackgroundColor: colors.pointBgColor,
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 2,
+                                pointRadius: 6,
+                                pointHoverRadius: 8,
+                                yAxisID: 'y'
+                            },
+                            {
+                                label: 'Total Pengeluaran (Rp)',
+                                data: expenses,
+                                borderColor: '#10b981',
+                                borderWidth: 3,
+                                backgroundColor: gradientPengeluaran,
+                                fill: true,
+                                tension: 0.35,
+                                pointBackgroundColor: '#059669',
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 2,
+                                pointRadius: 6,
+                                pointHoverRadius: 8,
+                                yAxisID: 'y1'
+                            }
+                        ]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
                             legend: {
-                                display: false
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: colors.textColor,
+                                    font: {
+                                        family: 'Plus Jakarta Sans',
+                                        weight: '600'
+                                    }
+                                }
                             },
                             tooltip: {
                                 backgroundColor: 'rgba(15, 23, 42, 0.9)',
@@ -581,10 +634,24 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
                                 bodyColor: '#fff',
                                 padding: 12,
                                 cornerRadius: 8,
-                                displayColors: false,
+                                displayColors: true,
                                 callbacks: {
                                     afterLabel: function(context) {
                                         return 'Tanggal: ' + tooltips[context.dataIndex];
+                                    },
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            if (context.datasetIndex === 1) {
+                                                label += 'Rp ' + context.parsed.y.toLocaleString('id-ID');
+                                            } else {
+                                                label += context.parsed.y.toLocaleString('id-ID') + ' orang';
+                                            }
+                                        }
+                                        return label;
                                     }
                                 }
                             }
@@ -603,6 +670,9 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
                                 }
                             },
                             y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
                                 grid: {
                                     color: colors.gridColor
                                 },
@@ -613,6 +683,43 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
                                         weight: '500'
                                     },
                                     beginAtZero: true
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Jumlah Peserta (orang)',
+                                    color: colors.textColor,
+                                    font: {
+                                        family: 'Plus Jakarta Sans',
+                                        weight: '600'
+                                    }
+                                }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                grid: {
+                                    drawOnChartArea: false
+                                },
+                                ticks: {
+                                    color: colors.textColor,
+                                    font: {
+                                        family: 'Plus Jakarta Sans',
+                                        weight: '500'
+                                    },
+                                    beginAtZero: true,
+                                    callback: function(value) {
+                                        return 'Rp ' + value.toLocaleString('id-ID');
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Total Pengeluaran (Rupiah)',
+                                    color: colors.textColor,
+                                    font: {
+                                        family: 'Plus Jakarta Sans',
+                                        weight: '600'
+                                    }
                                 }
                             }
                         }

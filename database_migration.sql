@@ -12,7 +12,9 @@ CREATE TABLE IF NOT EXISTS `pelaksanaan_proker` (
   `pelaksanaan_ke` INT NOT NULL,
   `tanggal_pelaksanaan` DATE NOT NULL,
   `jumlah_peserta` INT NOT NULL,
+  `total_pengeluaran` INT NOT NULL DEFAULT 0,
   `dampak_ke_himpunan` TEXT NOT NULL,
+  `evaluasi_kegiatan` TEXT NULL,
   FOREIGN KEY (`id_proker`) REFERENCES `proker` (`id_proker`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -34,3 +36,7 @@ WHERE NOT EXISTS (
 ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `email` VARCHAR(100) NOT NULL DEFAULT 'admin@himatif.org' AFTER `username`;
 ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `reset_token` VARCHAR(255) NULL AFTER `password`;
 ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `reset_expiry` DATETIME NULL AFTER `reset_token`;
+
+-- Ensure pelaksanaan_proker table has total_pengeluaran and evaluasi_kegiatan columns
+ALTER TABLE `pelaksanaan_proker` ADD COLUMN IF NOT EXISTS `total_pengeluaran` INT NOT NULL DEFAULT 0 AFTER `jumlah_peserta`;
+ALTER TABLE `pelaksanaan_proker` ADD COLUMN IF NOT EXISTS `evaluasi_kegiatan` TEXT NULL AFTER `dampak_ke_himpunan`;
