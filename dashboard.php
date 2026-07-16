@@ -139,10 +139,6 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
         
         <!-- Statistik Grid -->
         <div class="stats-grid">
-            <div class="stat-card kas">
-                <span class="stat-title">Kas Terkumpul</span>
-                <span class="stat-value">Rp <?php echo number_format($total_kas, 0, ',', '.'); ?></span>
-            </div>
             <div class="stat-card total">
                 <span class="stat-title">Total Anggota</span>
                 <span class="stat-value"><?php echo $total_anggota; ?></span>
