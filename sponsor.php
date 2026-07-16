@@ -15,26 +15,11 @@ $query = mysqli_query($conn, "
     JOIN proker p ON s.id_proker = p.id_proker
     ORDER BY s.id_sponsor DESC
 ");
+
+$page_title = "Manajemen Dana Sponsor";
+$active_menu = "sponsor";
+include 'header.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen Dana Sponsor - SIM HIMATIF</title>
-    <link rel="stylesheet" href="style.css?v=1.3">
-</head>
-<body>
-
-    <div class="navbar">
-        <div class="nav-brand">SIM HIMATIF - Sponsor</div>
-        <div style="display: flex; gap: 12px; align-items: center;">
-            <a href="dashboard.php">Dashboard</a>
-            <a href="sponsor.php" class="active-nav">Sponsor</a>
-            <a href="logout.php">Logout</a>
-        </div>
-    </div>
 
     <div class="container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
@@ -87,7 +72,10 @@ $query = mysqli_query($conn, "
         </div>
     </div>
 
-    <?php include 'footer.php'; ?>
+    <?php 
+    echo '</div>'; // Close main content wrapper from header.php
+    include 'footer.php'; 
+    ?>
     <?php include 'alerts.php'; ?>
 </body>
 </html>

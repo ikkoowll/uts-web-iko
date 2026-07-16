@@ -1144,3 +1144,177 @@ tbody tr:hover {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px var(--primary-color), 0 8px 30px rgba(139, 92, 246, 0.2);
 }
+
+/* ==========================================================================
+   Sidebar Navigation & Hamburger Layout
+   ========================================================================== */
+
+/* Hamburger Button */
+.hamburger-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.hamburger-btn:hover {
+    background-color: var(--navbar-link-hover);
+}
+
+/* Sidebar Wrapper */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: #0e0a22; /* Gelap senada */
+    border-right: 1px solid var(--card-border);
+    z-index: 150;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+}
+
+body.light-mode .sidebar {
+    background: #ffffff;
+    border-right: 1px solid rgba(139, 92, 246, 0.15);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.05);
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    margin-bottom: 30px;
+    padding: 0 12px;
+}
+
+.sidebar-header h3 {
+    font-size: 20px;
+    font-weight: 800;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sidebar-header p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* Sidebar Menu Items */
+.sidebar-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.sidebar-menu li a:hover {
+    color: var(--primary-color);
+    background: var(--navbar-link-hover);
+}
+
+.sidebar-menu li a.active-menu-item {
+    color: #fff;
+    background: var(--primary-gradient);
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+body.light-mode .sidebar-menu li a.active-menu-item {
+    color: #fff;
+}
+
+.sidebar-menu .menu-divider {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    margin-top: 20px;
+    margin-bottom: 6px;
+    padding: 0 16px;
+    opacity: 0.6;
+}
+
+/* Main Content Adjustments */
+.main-content-wrapper {
+    margin-left: 280px;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Collapsed Sidebar State (Desktop) */
+body.sidebar-collapsed .sidebar {
+    transform: translateX(-280px);
+}
+
+body.sidebar-collapsed .main-content-wrapper {
+    margin-left: 0;
+}
+
+/* Mobile Sidebar Overlay */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 140;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .main-content-wrapper {
+        margin-left: 0 !important;
+    }
+    
+    .navbar {
+        padding: 16px 20px !important;
+    }
+    
+    .container {
+        padding: 20px 16px !important;
+    }
+}

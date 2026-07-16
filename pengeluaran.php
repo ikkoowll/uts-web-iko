@@ -45,24 +45,9 @@ $total_pengeluaran = $total_data['total'] ?? 0;
 $riwayat_query = mysqli_query($conn, "SELECT * FROM pengeluaran_kas ORDER BY tanggal DESC, id DESC");
 ?>
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengeluaran Kas - SIM HIMATIF</title>
-    <link rel="stylesheet" href="style.css?v=1.3">
-</head>
-<body>
-
-    <div class="navbar">
-        <div class="nav-brand">SIM HIMATIF - Welcome, <?php echo $_SESSION['username']; ?>!</div>
-        <div style="display: flex; gap: 12px; align-items: center;">
-            <a href="dashboard.php">Dashboard</a>
-            <a href="pengeluaran.php" class="active-nav">Pengeluaran Kas</a>
-            <a href="logout.php">Logout</a>
-        </div>
-    </div>
+$page_title = "Pengeluaran Kas";
+$active_menu = "pengeluaran";
+include 'header.php';
 
     <div class="container">
         <h2>Pencatatan & Riwayat Pengeluaran Kas</h2>
@@ -171,8 +156,12 @@ $riwayat_query = mysqli_query($conn, "SELECT * FROM pengeluaran_kas ORDER BY tan
             textarea.style.background = 'rgba(255, 255, 255, 0.04)';
             textarea.style.boxShadow = 'none';
         });
-    </script>
-    <?php include 'footer.php'; ?>
+    </div>
+
+    <?php 
+    echo '</div>'; // Close main content wrapper from header.php
+    include 'footer.php'; 
+    ?>
     <?php include 'alerts.php'; ?>
 </body>
 </html>
