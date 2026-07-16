@@ -35,7 +35,7 @@ $tahun_aktif = intval(date('Y'));
 $payments = [];
 $kas_detail_q = mysqli_query($conn, "SELECT * FROM pembayaran_kas WHERE tahun = '$tahun_aktif'");
 while ($kp = mysqli_fetch_assoc($kas_detail_q)) {
-    $payments[$kp['id_anggota']][$kp['bulan']] = $kp;
+    $payments[$kp['id_anggota']][$kp['id_bulan']] = $kp;
 }
 
 // Set menu active and titles for header.php

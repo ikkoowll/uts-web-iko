@@ -199,7 +199,7 @@ if (isset($_POST['submit_import'])) {
                     mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
                     
                     $_SESSION['swal_success'] = "Impor selesai! Berhasil menambahkan $success_count anggota. (Dilewati/Gagal: $skipped_count)";
-                    header("Location: dashboard.php");
+                    header("Location: anggota.php");
                     exit;
                 } else {
                     $error_msg = "Impor selesai, namun tidak ada data baru yang ditambahkan. (Dilewati/Gagal: $skipped_count)";

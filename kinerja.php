@@ -92,7 +92,7 @@ include 'header.php';
                             <h4 class="proker-card-title"><?php echo htmlspecialchars($p_row['nama_proker']); ?></h4>
                             <span class="proker-badge <?php echo $badge_class; ?>"><?php echo $badge_text; ?></span>
                         </div>
-                        <p class="proker-card-desc"><?php echo htmlspecialchars($p_row['deskripsi']); ?></p>
+                        <p class="proker-card-desc">Target pelaksanaan program kerja: <?php echo $target; ?> kali selama periode kepengurusan.</p>
                         
                         <div style="margin-top: 15px;">
                             <div class="proker-progress-meta">
