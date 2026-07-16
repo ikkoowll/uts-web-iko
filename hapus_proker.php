@@ -27,14 +27,14 @@ if (isset($_GET['id'])) {
         mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
 
         $_SESSION['swal_success'] = 'Program kerja berhasil dihapus!';
-        header("Location: dashboard.php");
+        header("Location: kinerja.php");
         exit;
     } else {
         $_SESSION['swal_error'] = 'Gagal menghapus program kerja!';
-        header("Location: dashboard.php");
+        header("Location: kinerja.php");
         exit;
     }
 } else {
-    header("Location: dashboard.php");
+    header("Location: kinerja.php");
 }
 ?>

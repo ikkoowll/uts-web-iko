@@ -53,6 +53,6 @@ if (isset($_GET['id_anggota']) && isset($_GET['bulan'])) {
 }
 
 // Kembali ke dashboard setelah memproses toggle
-header("Location: dashboard.php");
+header("Location: anggota.php");
 exit;
 ?>

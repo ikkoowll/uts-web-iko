@@ -23,7 +23,7 @@ if (isset($_POST['simpan'])) {
             mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
 
             $_SESSION['swal_success'] = 'Program kerja berhasil ditambahkan!';
-            header("Location: dashboard.php");
+            header("Location: kinerja.php");
             exit;
         } else {
             $error = "Gagal menambahkan program kerja: " . mysqli_error($conn);

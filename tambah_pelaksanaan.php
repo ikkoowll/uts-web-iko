@@ -70,7 +70,7 @@ if (isset($_POST['simpan'])) {
             mysqli_commit($conn);
 
             $_SESSION['swal_success'] = 'Realisasi pelaksanaan proker berhasil dicatat!';
-            header("Location: dashboard.php");
+            header("Location: kinerja.php");
             exit;
         } catch (Exception $e) {
             mysqli_rollback($conn);

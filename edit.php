@@ -10,7 +10,7 @@ if (!isset($_SESSION['username'])) {
 
 // 1. Ambil ID dari URL
 if (!isset($_GET['id'])) {
-    header("Location: dashboard.php");
+    header("Location: anggota.php");
     exit;
 }
 $id = $_GET['id'];
@@ -22,7 +22,7 @@ $data = mysqli_fetch_assoc($query);
 // Jika data tidak ditemukan di database
 if (!$data) {
     $_SESSION['swal_error'] = 'Data tidak ditemukan!';
-    header("Location: dashboard.php");
+    header("Location: anggota.php");
     exit;
 }
 
@@ -42,7 +42,7 @@ if (isset($_POST['update'])) {
         mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
 
         $_SESSION['swal_success'] = 'Data anggota berhasil diperbarui!';
-        header("Location: dashboard.php");
+        header("Location: anggota.php");
         exit;
     } else {
         $error = "Gagal mengupdate data: " . mysqli_error($conn);

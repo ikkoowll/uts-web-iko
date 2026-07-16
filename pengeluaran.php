@@ -43,11 +43,11 @@ $total_pengeluaran = $total_data['total'] ?? 0;
 
 // Ambil riwayat pengeluaran (terbaru di atas)
 $riwayat_query = mysqli_query($conn, "SELECT * FROM pengeluaran_kas ORDER BY tanggal DESC, id DESC");
-?>
 
 $page_title = "Pengeluaran Kas";
 $active_menu = "pengeluaran";
 include 'header.php';
+?>
 
     <div class="container">
         <h2>Pencatatan & Riwayat Pengeluaran Kas</h2>

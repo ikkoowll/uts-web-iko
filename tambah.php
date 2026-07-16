@@ -26,7 +26,7 @@ if (isset($_POST['simpan'])) {
         mysqli_query($conn, "INSERT INTO log_aktivitas (user, aksi) VALUES ('$admin_user', '$log_aksi')");
 
         $_SESSION['swal_success'] = 'Data anggota berhasil ditambahkan!';
-        header("Location: dashboard.php");
+        header("Location: anggota.php");
         exit;
     } else {
         // Jika gagal (misal NIM sudah terdaftar karena UNIQUE), tampilkan error
