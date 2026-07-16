@@ -63,10 +63,18 @@ $sisa_kemahasiswaan = $master_kemahasiswaan - $total_proker_mhs;
 // Sisa Kas Utama saat ini
 $sisa_kas_utama = $total_kas;
 
-// Ambil akumulasi dana Sponsor untuk proker
-$proker_sponsor_query = mysqli_query($conn, "SELECT SUM(nominal_dana) as total FROM sponsor WHERE status_pencairan = 'Cair'");
-$proker_sponsor_data = mysqli_fetch_assoc($proker_sponsor_query);
-$total_proker_sponsor = $proker_sponsor_data['total'] ?? 0;
+// Ambil akumulasi dana Sponsor Cair (Pemasukan Sponsor)
+$sponsor_masuk_q = mysqli_query($conn, "SELECT SUM(nominal_dana) as total FROM sponsor WHERE status_pencairan = 'Cair'");
+$sponsor_masuk_d = mysqli_fetch_assoc($sponsor_masuk_q);
+$total_sponsor_masuk = $sponsor_masuk_d['total'] ?? 0;
+
+// Ambil akumulasi dana sponsor yang terpakai di proker
+$sponsor_keluar_q = mysqli_query($conn, "SELECT SUM(dana_dari_sponsor) as total FROM pelaksanaan_proker");
+$sponsor_keluar_d = mysqli_fetch_assoc($sponsor_keluar_q);
+$total_sponsor_keluar = $sponsor_keluar_d['total'] ?? 0;
+
+// Hitung sisa dana sponsor
+$sisa_dana_sponsor = $total_sponsor_masuk - $total_sponsor_keluar;
 
 
 $tahun_aktif = intval(date('Y'));
@@ -385,26 +393,16 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
 
                 <!-- Sponsor Card -->
                 <div class="stat-card" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%); border-color: rgba(245, 158, 11, 0.2);">
-                    <span class="stat-title" style="color: #fbbf24;">Dana Sponsor Diperoleh</span>
-                    <span class="stat-value" style="color: #fff;">Rp <?php echo number_format($total_proker_sponsor, 0, ',', '.'); ?></span>
-                    <div style="margin-top: 12px; font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
-                        Pemasukan eksternal dari sponsorship khusus program kerja selama periode aktif ini.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Visualisasi Struktur Modal Donut Chart -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 40px; width: 100%;">
-                <div class="chart-card" style="margin-bottom: 0;">
-                    <h3 class="chart-title">Proporsi Sumber Pendanaan Proker</h3>
-                    <div style="position: relative; height: 260px; width: 100%; display: flex; align-items: center; justify-content: center;">
-                        <canvas id="funding-source-chart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-card" style="margin-bottom: 0;">
-                    <h3 class="chart-title">Penyerapan Anggaran Kampus</h3>
-                    <div style="position: relative; height: 260px; width: 100%; display: flex; align-items: center; justify-content: center;">
-                        <canvas id="campus-budget-chart"></canvas>
+                    <span class="stat-title" style="color: #fbbf24;">Sisa Dana Sponsor</span>
+                    <span class="stat-value" style="color: #fff;">Rp <?php echo number_format($sisa_dana_sponsor, 0, ',', '.'); ?></span>
+                    <div style="margin-top: 12px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">
+                            <span>Terpakai: Rp <?php echo number_format($total_sponsor_keluar, 0, ',', '.'); ?></span>
+                            <span>Total Masuk: Rp <?php echo number_format($total_sponsor_masuk, 0, ',', '.'); ?></span>
+                        </div>
+                        <div class="progress-container" style="background: rgba(255, 255, 255, 0.05); height: 8px;">
+                            <div class="progress-bar" style="width: <?php echo min(100, ($total_sponsor_masuk > 0 ? ($total_sponsor_keluar / $total_sponsor_masuk) * 100 : 0)); ?>%; background: linear-gradient(90deg, #fbbf24, #f59e0b);"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -889,94 +887,6 @@ while ($cp = mysqli_fetch_assoc($chart_proker_query)) {
                     if (firstActiveCard) firstActiveCard.classList.add('active-card');
                 }
             }
-            // Chart: Proporsi Sumber Pendanaan Proker
-            const fundCtx = document.getElementById('funding-source-chart').getContext('2d');
-            const totalProkerKas = <?php echo $total_proker_kas; ?>;
-            const totalProkerSponsor = <?php echo $total_proker_sponsor; ?>;
-            const totalProkerMhs = <?php echo $total_proker_mhs; ?>;
-            const hasFundingData = (totalProkerKas + totalProkerSponsor + totalProkerMhs) > 0;
-            
-            new Chart(fundCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Kas Himpunan', 'Sponsor', 'Kemahasiswaan'],
-                    datasets: [{
-                        data: hasFundingData ? [totalProkerKas, totalProkerSponsor, totalProkerMhs] : [1, 1, 1],
-                        backgroundColor: hasFundingData ? ['#10b981', '#f59e0b', '#3b82f6'] : ['rgba(255,255,255,0.05)', 'rgba(255,255,255,0.05)', 'rgba(255,255,255,0.05)'],
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: colors.textColor,
-                                font: {
-                                    family: 'Plus Jakarta Sans',
-                                    weight: '600'
-                                }
-                            }
-                        },
-                        tooltip: {
-                            enabled: hasFundingData,
-                            callbacks: {
-                                label: function(context) {
-                                    const value = context.raw;
-                                    return context.label + ': Rp ' + value.toLocaleString('id-ID');
-                                }
-                            }
-                        }
-                    },
-                    cutout: '70%'
-                }
-            });
-
-            // Chart: Penyerapan Anggaran Kampus
-            const campusCtx = document.getElementById('campus-budget-chart').getContext('2d');
-            const sisaMhs = <?php echo $sisa_kemahasiswaan; ?>;
-            const hasCampusData = (totalProkerMhs + sisaMhs) > 0;
-
-            new Chart(campusCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Terpakai', 'Sisa'],
-                    datasets: [{
-                        data: hasCampusData ? [totalProkerMhs, Math.max(0, sisaMhs)] : [0, 5500000],
-                        backgroundColor: ['#3b82f6', 'rgba(255, 255, 255, 0.08)'],
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: colors.textColor,
-                                font: {
-                                    family: 'Plus Jakarta Sans',
-                                    weight: '600'
-                                }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const value = context.raw;
-                                    return context.label + ': Rp ' + value.toLocaleString('id-ID');
-                                }
-                            }
-                        }
-                    },
-                    cutout: '70%'
-                }
-            });
         });
     </script>
     <?php include 'footer.php'; ?>
