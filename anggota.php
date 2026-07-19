@@ -80,8 +80,8 @@ include 'header.php';
         </div>
         
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-            <input type="text" id="search-input" placeholder="Cari Nama / NIM Anggota..." style="padding: 10px 16px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; color: #fff; font-size: 14px; outline: none; transition: all 0.3s ease; width: 240px;">
-            <select id="filter-divisi" style="padding: 10px 16px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; color: #fff; font-size: 14px; outline: none; transition: all 0.3s ease; width: 200px; cursor: pointer;">
+            <input type="text" id="search-input" placeholder="Cari Nama / NIM Anggota..." style="width: 240px;">
+            <select id="filter-divisi" style="width: 200px; cursor: pointer;">
                 <option value="">Semua Divisi</option>
                 <option value="Humas">Humas</option>
                 <option value="PSDM">PSDM</option>

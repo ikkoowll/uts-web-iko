@@ -635,6 +635,7 @@ tbody tr:hover {
 }
 
 /* Select specific options styling */
+select option,
 .form-group select option {
     background-color: var(--select-option-bg);
     color: var(--input-color);
@@ -1317,4 +1318,43 @@ body.sidebar-collapsed .main-content-wrapper {
     .container {
         padding: 20px 16px !important;
     }
+}
+
+/* ==========================================================================
+   Theme Toggle Floating & Search Filter Styling
+   ========================================================================== */
+.theme-toggle-floating {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    box-shadow: 0 4px 15px var(--card-shadow) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.search-filter-wrapper input,
+.search-filter-wrapper select {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    color: var(--input-color) !important;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-filter-wrapper input:focus,
+.search-filter-wrapper select:focus {
+    border-color: var(--primary-color) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15) !important;
+}
+
+body.light-mode .search-filter-wrapper input:focus,
+body.light-mode .search-filter-wrapper select:focus {
+    background: rgba(0, 0, 0, 0.05) !important;
 }
